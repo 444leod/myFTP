@@ -1,6 +1,6 @@
 ##
 ## EPITECH PROJECT, 2024
-# PROJECT NAME
+## myFTP
 ## File description:
 ## Makefile
 ##

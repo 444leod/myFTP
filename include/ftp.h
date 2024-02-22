@@ -14,6 +14,12 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <errno.h>
+
+typedef struct server_info_s {
+    int port;
+    char *path;
+} *server_info_t;
 
 void my_error(char *str);
 int ftp(int argc, char *argv[]);

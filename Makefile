@@ -7,13 +7,18 @@
 
 NAME = myftp
 
-SRC = ./src/main.c
+SRC = main.c \
+	$(addprefix src/, $(SRC_FOLDER_SRC))
+
+SRC_FOLDER_SRC = ftp.c \
+	check_args.c \
+	lib.c \
 
 OBJ = $(SRC:.c=.o)
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -Wpedantic
+CFLAGS = -Wall -Wextra -Werror -Wpedantic -I./include
 
 all: $(NAME)
 

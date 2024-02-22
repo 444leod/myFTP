@@ -15,6 +15,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#include <string.h>
 
 typedef struct server_info_s {
     int port;

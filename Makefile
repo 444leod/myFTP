@@ -5,11 +5,11 @@
 ## Makefile
 ##
 
-NAME = EXECUTABLE_NAME
+NAME = myftp
 
 SRC = ./src/main.c
 
-OBJ = $(SRC:.asm=.o)
+OBJ = $(SRC:.c=.o)
 
 CC = gcc
 

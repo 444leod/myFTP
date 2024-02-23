@@ -19,6 +19,7 @@ NETWORK_SRC = get_socket.c \
 	bind_socket.c \
 	listen_socket.c \
 	accept_socket.c \
+	reply_message.c \
 
 OBJ = $(SRC:.c=.o)
 

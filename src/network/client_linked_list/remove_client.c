@@ -6,15 +6,17 @@
 */
 
 #include "clientllist.h"
+#include <unistd.h>
 
-void remove_client(client_t *clients, int fd)
+void remove_client(int fd)
 {
+    client_t *clients = get_clients();
     client_t tmp = *clients;
     client_t prev = NULL;
 
     if (tmp && tmp->fd == fd) {
         *clients = tmp->next;
-        free(tmp);
+        close(fd);
         return;
     }
     while (tmp && tmp->fd != fd) {

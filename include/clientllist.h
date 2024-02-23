@@ -18,6 +18,8 @@ typedef struct client_s {
     struct client_s *next;
 } *client_t;
 
-void add_client(client_t *clients, client_t new_client);
-void remove_client(client_t *clients, int fd);
+void add_client(client_t new_client);
+void remove_client(int fd);
 client_t create_client(int fd, char *ip, char *username, char *password);
+client_t *get_clients(void);
+void clear_clients(void);

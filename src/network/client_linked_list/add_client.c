@@ -7,8 +7,9 @@
 
 #include "clientllist.h"
 
-void add_client(client_t *clients, client_t new_client)
+void add_client(client_t new_client)
 {
+    client_t *clients = get_clients();
     client_t tmp = *clients;
 
     if (!tmp) {

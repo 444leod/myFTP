@@ -10,7 +10,7 @@
 
 client_t create_client(int fd, char *ip, char *username, char *password)
 {
-    client_t client = malloc(sizeof(client_t));
+    client_t client = malloc(sizeof(struct client_s));
     static int client_id = 0;
 
     if (!client)

@@ -17,6 +17,9 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/select.h>
+#include <signal.h>
+#include "garbage_collector.h"
+#include "lib.h"
 
 typedef struct server_info_s {
     int port;
@@ -45,7 +48,6 @@ typedef struct server_message_s {
     char *message;
 } server_message_s;
 
-void my_error(char *str);
 int ftp(int argc, char *argv[]);
 void check_args(int argc, char *argv[]);
 int get_socket(void);
@@ -53,5 +55,7 @@ void bind_socket(int socketFd, int port);
 void listen_socket(int socketFd, int maxClients);
 void accept_socket(int socketFd, void (*func)(int));
 void reply_code(int code, int socketFd);
-void prepare_exit(int socketFd);
-void my_exit(int status);
+
+
+#define malloc my_malloc
+#define free my_free

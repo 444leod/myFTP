@@ -38,27 +38,26 @@ void my_free(void *ptr)
     garbage_node_t *list = get_garbage();
     garbage_node_t tmp = *list;
     garbage_node_t prev = NULL;
-    printf("je free\n");
 
     while (tmp) {
-        if (tmp->ptr == ptr) {
-            if (prev)
-                prev->next = tmp->next;
-            else
-                *list = tmp->next;
-            free(tmp->ptr);
-            free(tmp);
-            return;
+        if (tmp->ptr != ptr) {
+            prev = tmp;
+            tmp = tmp->next;
+            continue;
         }
-        prev = tmp;
-        tmp = tmp->next;
+        if (prev)
+            prev->next = tmp->next;
+        else
+            *list = tmp->next;
+        free(tmp->ptr);
+        free(tmp);
+        return;
     }
 }
 
 void *my_malloc(size_t size)
 {
     void *ptr = malloc(size);
-    printf("je malloc\n");
 
     if (!ptr)
         my_exit(84);
@@ -71,11 +70,12 @@ void clear_garbage_collector(void)
     garbage_node_t *list = get_garbage();
     garbage_node_t tmp = *list;
 
-    printf("je clear\n");
     while (*list) {
         tmp = *list;
         *list = (*list)->next;
-        free(tmp->ptr);
-        free(tmp);
+        if (tmp->ptr)
+            free(tmp->ptr);
+        if (tmp)
+            free(tmp);
     }
 }

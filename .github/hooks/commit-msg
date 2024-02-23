@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+
+import sys, os, re
+from subprocess import check_output
+
+commit_msg_filepath = sys.argv[1]
+
+with open(commit_msg_filepath, 'r') as f:
+    content = f.read()
+    pattern = r"^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test|del|merge)(\(.+\))?: .+$"
+    if re.match(pattern, content):
+        exit(0)
+    else:
+        exit(1)
+
+report = subprocess.run(["mango"], capture_output=True, text=True)
+if (report.returncode != 0):
+    print(report.stdout)
+    sys.exit(1)
+

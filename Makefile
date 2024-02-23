@@ -7,13 +7,24 @@
 
 NAME = myftp
 
-SRC = ./src/main.c
+SRC = main.c \
+	$(addprefix src/, $(SRC_SRC)) \
+	$(addprefix src/network/, $(NETWORK_SRC)) \
+
+SRC_SRC = ftp.c \
+	check_args.c \
+	my_lib.c \
+
+NETWORK_SRC = get_socket.c \
+	bind_socket.c \
+	listen_socket.c \
+	accept_socket.c \
 
 OBJ = $(SRC:.c=.o)
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -Wpedantic
+CFLAGS = -Wall -Wextra -Werror -Wpedantic -I./include
 
 all: $(NAME)
 

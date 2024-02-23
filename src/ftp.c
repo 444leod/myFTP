@@ -7,16 +7,7 @@
 
 #include "ftp.h"
 
-int get_socket(void)
-{
-    int socketFd = socket(AF_INET, SOCK_STREAM, 0);
-
-    if (errno != 0 || socketFd == -1)
-        my_error(strerror(errno));
-    return socketFd;
-}
-
-server_info_t init_server_info(char *argv[])
+static server_info_t init_server_info(char *argv[])
 {
     server_info_t server_info = malloc(sizeof(server_info_t));
 
@@ -25,18 +16,18 @@ server_info_t init_server_info(char *argv[])
     return server_info;
 }
 
-void bind_socket(int socketFd, int portNumber)
+static void handle_client(int clientFd)
 {
-    struct sockaddr_in serverAddress;
-    int bindRes = 0;
+    char buffer[1024] = {0};
+    int valread = 0;
 
-    serverAddress.sin_family = AF_INET;
-    serverAddress.sin_port = htons(portNumber);
-    serverAddress.sin_addr.s_addr = htons(INADDR_ANY);
-    bindRes = bind(socketFd, (const struct sockaddr *)&serverAddress,
-        sizeof(serverAddress));
-    if (bindRes == -1 || errno != 0)
+    valread = read(clientFd, buffer, 1024);
+    if (valread < 0)
         my_error(strerror(errno));
+    buffer[valread - 1] = '\0';
+    printf("client message: \"%s\"\n", buffer);
+    send(clientFd, "Hello, World!\n", 14, 0);
+    close(clientFd);
 }
 
 int ftp(int argc, char *argv[])
@@ -49,6 +40,8 @@ int ftp(int argc, char *argv[])
     server_info = init_server_info(argv);
     socketFd = get_socket();
     bind_socket(socketFd, server_info->port);
+    listen_socket(socketFd, 1024);
+    accept_socket(socketFd, handle_client);
     close(socketFd);
     return 0;
 }

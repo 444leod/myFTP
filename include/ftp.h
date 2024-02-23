@@ -25,3 +25,7 @@ typedef struct server_info_s {
 void my_error(char *str);
 int ftp(int argc, char *argv[]);
 void check_args(int argc, char *argv[]);
+int get_socket(void);
+void bind_socket(int socketFd, int port);
+void listen_socket(int socketFd, int maxClients);
+void accept_socket(int socketFd, void (*func)(int));

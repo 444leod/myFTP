@@ -8,11 +8,17 @@
 NAME = myftp
 
 SRC = main.c \
-	$(addprefix src/, $(SRC_FOLDER_SRC))
+	$(addprefix src/, $(SRC_SRC)) \
+	$(addprefix src/network/, $(NETWORK_SRC)) \
 
-SRC_FOLDER_SRC = ftp.c \
+SRC_SRC = ftp.c \
 	check_args.c \
-	lib.c \
+	my_lib.c \
+
+NETWORK_SRC = get_socket.c \
+	bind_socket.c \
+	listen_socket.c \
+	accept_socket.c \
 
 OBJ = $(SRC:.c=.o)
 

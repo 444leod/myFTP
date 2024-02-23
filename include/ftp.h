@@ -20,6 +20,7 @@
 #include <signal.h>
 #include "garbage_collector.h"
 #include "lib.h"
+#include "clientllist.h"
 
 typedef struct server_info_s {
     int port;
@@ -55,7 +56,5 @@ void bind_socket(int socketFd, int port);
 void listen_socket(int socketFd, int maxClients);
 void accept_socket(int socketFd, void (*func)(int));
 void reply_code(int code, int socketFd);
-
-
-#define malloc my_malloc
-#define free my_free
+void print_fd_set(fd_set *set);
+void loop_clients(client_t *clients, fd_set *readfds);

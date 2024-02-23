@@ -15,20 +15,25 @@ SRC = main.c \
 
 SRC_SRC = ftp.c \
 	check_args.c \
+	handle_clients.c \
 
 LIB_SRC = exit.c \
 	my_error.c \
 	garbage_collector.c \
+	my_strdup.c \
 
 NETWORK_SRC = get_socket.c \
 	bind_socket.c \
 	listen_socket.c \
 	accept_socket.c \
 	reply_code.c \
+	print_fd_set.c \
 
 CLIENT_LLIST_SRC = add_client.c \
 	create_client.c \
 	remove_client.c \
+	get_clients.c \
+	clear_clients.c \
 
 OBJ = $(SRC:.c=.o)
 

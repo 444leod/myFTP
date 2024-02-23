@@ -2,14 +2,13 @@
 ** EPITECH PROJECT, 2024
 ** myFTP
 ** File description:
-** lib
+** my_error
 */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "ftp.h"
 
 void my_error(char *str)
 {
     fprintf(stderr, "Error: %s\n", str);
-    exit(84);
+    my_exit(84);
 }

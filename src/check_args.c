@@ -11,7 +11,7 @@ static void check_args_number(int argc)
 {
     if (argc != 3) {
         printf("Usage: ./myftp port path\n");
-        exit(84);
+        my_exit(84);
     }
 }
 

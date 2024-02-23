@@ -9,16 +9,31 @@ NAME = myftp
 
 SRC = main.c \
 	$(addprefix src/, $(SRC_SRC)) \
+	$(addprefix src/lib/, $(LIB_SRC)) \
 	$(addprefix src/network/, $(NETWORK_SRC)) \
+	$(addprefix src/network/client_linked_list/, $(CLIENT_LLIST_SRC)) \
 
 SRC_SRC = ftp.c \
 	check_args.c \
-	my_lib.c \
+	handle_clients.c \
+
+LIB_SRC = exit.c \
+	my_error.c \
+	garbage_collector.c \
+	my_strdup.c \
 
 NETWORK_SRC = get_socket.c \
 	bind_socket.c \
 	listen_socket.c \
 	accept_socket.c \
+	reply_code.c \
+	print_fd_set.c \
+
+CLIENT_LLIST_SRC = add_client.c \
+	create_client.c \
+	remove_client.c \
+	get_clients.c \
+	clear_clients.c \
 
 OBJ = $(SRC:.c=.o)
 
@@ -42,6 +57,9 @@ re: fclean all
 tests_run: all
 
 run: all
+
+debug:
+	$(CC) -o $(NAME) $(SRC) $(CFLAGS) -g
 
 .PHONY: all clean fclean re
 .SILENT: run

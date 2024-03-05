@@ -52,14 +52,14 @@ static void read_buffer(client_t client)
 static void queue_command(client_t client)
 {
     char *after_crlf = NULL;
-    int index = 0;
+    int i = 0;
 
     if (client->next_commands) {
         after_crlf = strstr(client->next_commands, "\r\n");
         if (after_crlf) {
-            index = after_crlf - client->next_commands;
-            client->command = my_strndup(client->next_commands, index);
-            client->next_commands = my_strdup(client->next_commands + index + 2);
+            i = after_crlf - client->next_commands;
+            client->command = my_strndup(client->next_commands, i);
+            client->next_commands = my_strdup(client->next_commands + i + 2);
         }
     }
 }

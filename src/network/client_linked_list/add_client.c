@@ -12,7 +12,7 @@ void add_client(client_t new_client)
     client_t *clients = get_clients();
     client_t tmp = *clients;
 
-    if (!tmp) {
+    if (!*clients) {
         *clients = new_client;
         return;
     }

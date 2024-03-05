@@ -5,7 +5,8 @@
 ** bind_socket
 */
 
-#include "ftp.h"
+#include <arpa/inet.h>
+#include "lib.h"
 
 void bind_socket(int socketFd, int portNumber)
 {

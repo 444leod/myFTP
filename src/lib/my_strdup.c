@@ -16,3 +16,11 @@ char *my_strdup(char const *src)
     strcpy(dest, src);
     return dest;
 }
+
+char *my_strndup(char const *src, int n)
+{
+    char *dest = my_malloc(sizeof(char) * (n + 1));
+
+    strncpy(dest, src, n);
+    return dest;
+}

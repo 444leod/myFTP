@@ -18,6 +18,7 @@ SRC_SRC = ftp.c \
 	check_args.c \
 	handle_clients.c \
 	handle_commands.c \
+	accounts.c \
 
 LIB_SRC = exit.c \
 	my_error.c \
@@ -30,6 +31,7 @@ LIB_SRC = exit.c \
 COMMANDS_SRC = user.c \
 	quit.c \
 	unknown_command.c \
+	pass.c \
 
 NETWORK_SRC = get_socket.c \
 	bind_socket.c \

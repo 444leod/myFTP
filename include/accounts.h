@@ -12,7 +12,4 @@ typedef struct accounts_s {
     char *password;
 } accounts_s;
 
-const accounts_s accounts[] = {
-    {"Anonymous", ""},
-    {NULL, NULL}
-};
+extern const accounts_s accounts[];

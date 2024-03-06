@@ -34,5 +34,6 @@ const command_t commands[] = {
     // {"STOR", NULL},
     // {"LIST", NULL},
     // {NULL, &unknown_command}
+    {NULL, NULL}
 };
 

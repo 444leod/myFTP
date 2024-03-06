@@ -5,7 +5,8 @@
 ** accept_client
 */
 
-#include "ftp.h"
+#include <arpa/inet.h>
+#include "lib.h"
 
 void accept_socket(int sockFd, void (*func)(int))
 {

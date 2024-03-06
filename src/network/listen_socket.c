@@ -5,7 +5,8 @@
 ** listen_socket
 */
 
-#include "ftp.h"
+#include <arpa/inet.h>
+#include "lib.h"
 
 void listen_socket(int socketFd, int maxClients)
 {

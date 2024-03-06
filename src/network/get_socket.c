@@ -5,7 +5,8 @@
 ** get_socket
 */
 
-#include "ftp.h"
+#include <arpa/inet.h>
+#include "lib.h"
 
 int get_socket(void)
 {

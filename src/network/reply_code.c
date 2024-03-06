@@ -5,8 +5,9 @@
 ** reply_code
 */
 
-#include "ftp.h"
 #include "fcntl.h"
+#include <stdio.h>
+#include "reply_code.h"
 
 const server_message_s serverMessages[] = {
     {SERVICE_READY,
@@ -37,7 +38,29 @@ const server_message_s serverMessages[] = {
         "%d Username okay, need password.\n"},
     {NEED_ACCOUNT_FOR_LOGIN,
         "%d Need account for login.\n"},
-    {-1, NULL}
+    {SYNTAX_ERROR,
+        "%d Syntax error, command unrecognized.\n"},
+    {SYNTAX_ERROR_IN_PARAMETERS,
+        "%d Syntax error in parameters or arguments.\n"},
+    {COMMAND_NOT_IMPLEMENTED,
+        "%d Command not implemented.\n"},
+    {BAD_COMMAND_SEQUENCE,
+        "%d Bad sequence of commands.\n"},
+    {COMMAND_NOT_IMPLEMENTED_FOR_PARAMETER,
+        "%d Command not implemented for that parameter.\n"},
+    {NOT_LOGGED_IN,
+        "%d Not logged in.\n"},
+    {NEED_ACCOUNT_FOR_STORING_FILES,
+        "%d Need account for storing files.\n"},
+    {FILE_UNAVAILABLE,
+        "%d File unavailable (e.g., file not found, no access).\n"},
+    {PAGE_TYPE_UNKNOWN,
+        "%d Page type unknown.\n"},
+    {EXCEEDED_STORAGE_ALLOCATION,
+        "%d Exceeded storage allocation.\n"},
+    {BAD_FILENAME,
+        "%d Bad filename.\n"},
+    {-1, (void *)0}
 };
 
 void reply_code(int code, int socketFd)

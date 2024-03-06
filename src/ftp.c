@@ -7,6 +7,10 @@
 
 #include "ftp.h"
 #include "clientllist.h"
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/select.h>
 
 static void handle_sigint(int sig)
 {
@@ -21,16 +25,23 @@ static server_info_t init_server_info(char *argv[])
     if (!server_info)
         my_exit(84);
     server_info->port = atoi(argv[1]);
-    server_info->path = strdup(argv[2]);
+    server_info->path = my_strdup(argv[2]);
     return server_info;
 }
 
-static void add_clients_to_set(client_t *clients, fd_set *readfds, int *max_sd)
+static void add_clients_to_set(
+    client_t *clients,
+    fd_set *readfds,
+    fd_set *writefds,
+    int *max_sd)
 {
     client_t tmp = *clients;
 
     while (tmp) {
-        FD_SET(tmp->fd, readfds);
+        if (tmp->data_status == READING)
+            FD_SET(tmp->fd, readfds);
+        if (tmp->data_status == WRITING)
+            FD_SET(tmp->fd, writefds);
         if (tmp->fd > *max_sd)
             *max_sd = tmp->fd;
         tmp = tmp->next;
@@ -49,33 +60,53 @@ static void add_new_client(int socketFd)
     if (new_socket < 0)
         my_error(strerror(errno));
     if (*clients == NULL)
-        *clients = create_client(new_socket,
-            inet_ntoa(address.sin_addr), NULL, NULL);
+        *clients = create_client(new_socket, inet_ntoa(address.sin_addr));
     else
-        add_client(create_client(new_socket,
-            inet_ntoa(address.sin_addr), NULL, NULL));
-    reply_code(220, new_socket);
+        add_client(create_client(new_socket, inet_ntoa(address.sin_addr)));
+}
+
+static void select_wrapper(int max_sd, fd_set *readfds,
+    fd_set *writefds, client_t *clients)
+{
+    struct timeval timeout = {0, 100};
+    int activity = 0;
+    client_t tmp = *clients;
+    char is_blocking = 1;
+
+    while (tmp) {
+        if (tmp->data_status == PROCESSING) {
+            is_blocking = 0;
+            break;
+        }
+        tmp = tmp->next;
+    }
+    if (is_blocking)
+        activity = select(max_sd + 1, readfds, writefds, NULL, NULL);
+    else
+        activity = select(max_sd + 1, readfds, writefds, NULL, &timeout);
+    if (activity < 0)
+        my_error(strerror(errno));
 }
 
 void ftp_loop(int socketFd)
 {
     fd_set readfds;
+    fd_set writefds;
     int max_sd = 0;
     client_t *clients = NULL;
 
     while (1) {
         clients = get_clients();
         FD_ZERO(&readfds);
+        FD_ZERO(&writefds);
         FD_SET(socketFd, &readfds);
         max_sd = socketFd;
-        add_clients_to_set(clients, &readfds, &max_sd);
+        add_clients_to_set(clients, &readfds, &writefds, &max_sd);
         print_fd_set(&readfds);
-        if (select(max_sd + 1, &readfds, NULL, NULL, NULL) < 0) {
-            my_error(strerror(errno));
-        }
+        select_wrapper(max_sd + 1, &readfds, &writefds, clients);
         if (FD_ISSET(socketFd, &readfds))
             add_new_client(socketFd);
-        loop_clients(clients, &readfds);
+        loop_clients(clients, &readfds, &writefds);
     }
 }
 

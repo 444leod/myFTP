@@ -5,6 +5,7 @@
 ** user
 */
 
+#include <sys/select.h>
 #include "clientllist.h"
 #include "ftp.h"
 #include "reply_code.h"

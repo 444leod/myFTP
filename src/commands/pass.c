@@ -6,9 +6,10 @@
 */
 
 #include "clientllist.h"
-#include "ftp.h"
 #include "reply_code.h"
 #include "accounts.h"
+#include "lib.h"
+#include <sys/select.h>
 
 static void verify_password_match(client_t client, char *account_password,
     char *password)

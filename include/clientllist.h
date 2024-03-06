@@ -17,6 +17,7 @@ typedef struct client_s {
     char *next_commands;
     char *username;
     int current_code;
+    char *pwd;
     enum {
         STATUS_NOT_LOGGED_IN,
         STATUS_USERNAME_OK,

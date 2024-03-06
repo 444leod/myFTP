@@ -26,6 +26,8 @@ static server_info_t init_server_info(char *argv[])
         my_exit(84);
     server_info->port = atoi(argv[1]);
     server_info->path = my_strdup(argv[2]);
+    if (server_info->path[strlen(server_info->path) - 1] == '/')
+        server_info->path[strlen(server_info->path) - 1] = '\0';
     return server_info;
 }
 

@@ -12,12 +12,13 @@ SRC = main.c \
 	$(addprefix src/lib/, $(LIB_SRC)) \
 	$(addprefix src/network/, $(NETWORK_SRC)) \
 	$(addprefix src/network/client_linked_list/, $(CLIENT_LLIST_SRC)) \
-	# $(addprefix src/commands/, $(COMMANDS_SRC)) \
+	$(addprefix src/commands/, $(COMMANDS_SRC)) \
 
 SRC_SRC = ftp.c \
 	check_args.c \
 	handle_clients.c \
 	handle_commands.c \
+	accounts.c \
 
 LIB_SRC = exit.c \
 	my_error.c \
@@ -27,9 +28,10 @@ LIB_SRC = exit.c \
 	tablen.c \
 	supercat.c \
 
-# COMMANDS_SRC = user.c \
-# 	quit.c \
-# 	unknown_command.c \
+COMMANDS_SRC = user.c \
+	quit.c \
+	unknown_command.c \
+	pass.c \
 
 NETWORK_SRC = get_socket.c \
 	bind_socket.c \

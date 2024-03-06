@@ -7,7 +7,9 @@
 
 #include "fcntl.h"
 #include <stdio.h>
+#include <stdbool.h>
 #include "reply_code.h"
+#include "clientllist.h"
 
 const server_message_s serverMessages[] = {
     {SERVICE_READY,
@@ -33,7 +35,7 @@ const server_message_s serverMessages[] = {
     {REQUESTED_FILE_ACTION_COMPLETED,
         "%d Requested file action okay, completed.\n"},
     {PATHNAME_CREATED,
-        "%d Pathname created.\n"},
+        "%d \"%s\".\n"},
     {USERNAME_OK_NEED_PASSWORD,
         "%d Username okay, need password.\n"},
     {NEED_ACCOUNT_FOR_LOGIN,
@@ -63,18 +65,32 @@ const server_message_s serverMessages[] = {
     {-1, (void *)0}
 };
 
-void reply_code(int code, int socketFd)
+static bool special_reply_code(client_t client)
 {
+    int socketFd = client->fd;
+    int code = client->current_code;
+
     switch (code) {
         case SERVICE_READY:
             dprintf(socketFd, serverMessages[0].message, code, 0);
-            return;
+            return true;
         case HELP_MESSAGE:
             dprintf(socketFd, serverMessages[4].message, code);
-            return;
-        default:
-            break;
+            return true;
+        case PATHNAME_CREATED:
+            dprintf(socketFd, serverMessages[11].message, code, client->pwd);
+            return true;
     }
+    return false;
+}
+
+void reply_code(client_t client)
+{
+    int socketFd = client->fd;
+    int code = client->current_code;
+
+    if (special_reply_code(client))
+        return;
     for (int i = 0; serverMessages[i].code != -1; i++) {
         if (serverMessages[i].code == code) {
             dprintf(socketFd, serverMessages[i].message, code);

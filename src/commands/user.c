@@ -13,11 +13,11 @@
 static void verify_user(client_t client, char *username)
 {
     if (client->status == STATUS_USERNAME_OK) {
-        client->current_code = 503;
+        client->current_code = BAD_COMMAND_SEQUENCE;
         return;
     }
     if (client->username) {
-        client->current_code = 530;
+        client->current_code = NOT_LOGGED_IN;
         return;
     }
     for (int i = 0; accounts[i].username; i++) {
@@ -28,7 +28,7 @@ static void verify_user(client_t client, char *username)
             return;
         }
     }
-    client->current_code = 530;
+    client->current_code = NOT_LOGGED_IN;
 }
 
 void user(client_t client, char **args, fd_set *readfds)
@@ -41,7 +41,7 @@ void user(client_t client, char **args, fd_set *readfds)
             verify_user(client, args[1]);
             break;
         default:
-            client->current_code = SYNTAX_ERROR;
+            client->current_code = SYNTAX_ERROR_IN_PARAMETERS;
             break;
     }
 }

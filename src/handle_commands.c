@@ -22,7 +22,8 @@ static void execute_command(char **command, client_t client, fd_set *readfds)
             return;
         }
     }
-    commands[i].func(client, command, readfds);
+    // commands[i].func(client, command, readfds);
+    client->current_code = 500;
 }
 
 void handle_command(client_t client, fd_set *readfds)

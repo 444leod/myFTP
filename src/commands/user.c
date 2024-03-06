@@ -33,9 +33,9 @@ static void verify_user(client_t client, char *username)
 
 void user(client_t client, char **args, fd_set *readfds)
 {
-    (void)readfds;
     int len = tablen((void **)args);
 
+    (void)readfds;
     switch (len) {
         case 2:
             verify_user(client, args[1]);

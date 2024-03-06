@@ -57,7 +57,7 @@ const server_message_s serverMessages[] = {
     {PAGE_TYPE_UNKNOWN,
         "%d Page type unknown.\n"},
     {EXCEEDED_STORAGE_ALLOCATION,
-        "%d Exceeded storage allocation (for current directory or dataset).\n"},
+        "%d Exceeded storage allocation.\n"},
     {BAD_FILENAME,
         "%d Bad filename.\n"},
     {-1, (void *)0}

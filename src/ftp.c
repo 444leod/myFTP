@@ -36,10 +36,11 @@ static void add_clients_to_set(
     int *max_sd)
 {
     client_t tmp = *clients;
+
     while (tmp) {
         if (tmp->data_status == READING)
             FD_SET(tmp->fd, readfds);
-        else if (tmp->data_status == WRITING)
+        if (tmp->data_status == WRITING)
             FD_SET(tmp->fd, writefds);
         if (tmp->fd > *max_sd)
             *max_sd = tmp->fd;

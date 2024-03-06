@@ -36,4 +36,3 @@ const command_t commands[] = {
     // {NULL, &unknown_command}
     {NULL, NULL}
 };
-

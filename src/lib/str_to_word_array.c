@@ -16,11 +16,13 @@ char **str_to_word_array(char *str, char *delim)
     char *start = str;
     char *end;
 
-    while ((end = strpbrk(start, delim)) != NULL) {
+    end = strpbrk(start, delim);
+    while (end != NULL) {
         array[i] = my_strndup(start, end - start);
         i++;
         array = realloc(array, sizeof(char *) * (i + 1));
         start = end + 1;
+        end = strpbrk(start, delim);
     }
     array[i] = my_strdup(start);
     i++;

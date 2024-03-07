@@ -27,12 +27,15 @@ LIB_SRC = exit.c \
 	str_to_word_array.c \
 	tablen.c \
 	supercat.c \
+	get_current_dir.c \
 
 COMMANDS_SRC = user.c \
 	quit.c \
 	unknown_command.c \
 	pass.c \
 	pwd.c \
+	cwd.c \
+	cdup.c \
 
 NETWORK_SRC = get_socket.c \
 	bind_socket.c \

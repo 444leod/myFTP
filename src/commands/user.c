@@ -5,6 +5,7 @@
 ** user
 */
 
+#include "ftp.h"
 #include "clientllist.h"
 #include "reply_code.h"
 #include "lib.h"
@@ -30,13 +31,16 @@ static void verify_user(client_t client, char *username)
             return;
         }
     }
-    client->current_code = NOT_LOGGED_IN;
+    client->status = STATUS_USERNAME_OK;
+    client->current_code = USERNAME_OK_NEED_PASSWORD;
 }
 
-void user(client_t client, char **args, fd_set *readfds)
+void user(client_t client, char **args,
+    fd_set *readfds, server_info_t server_info)
 {
     int len = tablen((void **)args);
 
+    (void)server_info;
     (void)readfds;
     switch (len) {
         case 2:

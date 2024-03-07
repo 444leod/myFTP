@@ -31,5 +31,7 @@ void listen_socket(int socketFd, int maxClients);
 void accept_socket(int socketFd, void (*func)(int));
 void reply_code(client_t client);
 void print_fd_set(fd_set *set);
-void loop_clients(client_t *clients, fd_set *readfds, fd_set *writefds);
-void handle_command(client_t client, fd_set *readfds);
+void loop_clients(client_t *clients, fd_set *readfds,
+    fd_set *writefds, server_info_t server_info);
+void handle_command(client_t client, fd_set *readfds,
+    server_info_t server_info);

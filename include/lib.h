@@ -18,3 +18,4 @@ char **str_to_word_array(char *str, char *delim);
 int tablen(void **tab);
 char *supercat(int n, ...);
 char *my_strndup(char const *src, int n);
+char *get_current_dir(void);

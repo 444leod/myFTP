@@ -40,7 +40,10 @@ static void change_working_directory(client_t client, char *path, server_info_t 
         client->current_code = FILE_UNAVAILABLE;
         return;
     }
-    new_path = supercat(3, server_info->path, client->pwd, path);
+    if (path[0] == '/')
+        new_path = supercat(2, server_info->path, path);
+    else
+        new_path = supercat(3, server_info->path, client->pwd, path);
     if (chdir(new_path) == -1) {
         client->current_code = FILE_UNAVAILABLE;
         return;
@@ -52,14 +55,12 @@ void cwd(client_t client, char **args,
     fd_set *readfds, server_info_t server_info)
 {
     int len = tablen((void **)args);
-    char *path = NULL;
 
     (void)readfds;
     (void)server_info;
     switch (len) {
         case 2:
-            path = args[1][0] == '/' ? args[1] + 1 : args[1];
-            change_working_directory(client, path, server_info);
+            change_working_directory(client, args[1], server_info);
             break;
         default:
             client->current_code = SYNTAX_ERROR_IN_PARAMETERS;

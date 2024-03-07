@@ -17,6 +17,6 @@ void pwd(client_t client, char **args, fd_set *readfds)
         client->current_code = NOT_LOGGED_IN;
         return;
     }
-    client->current_code = 257;
+    client->current_code = PATHNAME_CREATED;
     client->data_status = WRITING;
 }

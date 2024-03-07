@@ -64,14 +64,15 @@ static void queue_command(client_t client)
     }
 }
 
-static void trigger_action(client_t client, fd_set *readfds, fd_set *writefds)
+static void trigger_action(client_t client, fd_set *readfds,
+    fd_set *writefds, server_info_t server_info)
 {
     if (FD_ISSET(client->fd, readfds))
         read_buffer(client);
     if (client->data_status == PROCESSING) {
         queue_command(client);
         if (client->command)
-            handle_command(client, readfds);
+            handle_command(client, readfds, server_info);
         else
             client->data_status = READING;
         client->command = NULL;
@@ -80,14 +81,15 @@ static void trigger_action(client_t client, fd_set *readfds, fd_set *writefds)
         send_buffer(client);
 }
 
-void loop_clients(client_t *clients, fd_set *readfds, fd_set *writefds)
+void loop_clients(client_t *clients, fd_set *readfds,
+    fd_set *writefds, server_info_t server_info)
 {
     client_t tmp = *clients;
     int tempFd = 0;
 
     while (tmp) {
         tempFd = tmp->fd;
-        trigger_action(tmp, readfds, writefds);
+        trigger_action(tmp, readfds, writefds, server_info);
         if (tmp && tmp->fd == tempFd)
             tmp = tmp->next;
     }

@@ -7,6 +7,7 @@
 
 #include "ftp.h"
 #include "clientllist.h"
+#include "lib.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -25,7 +26,9 @@ static server_info_t init_server_info(char *argv[])
     if (!server_info)
         my_exit(84);
     server_info->port = atoi(argv[1]);
-    server_info->path = my_strdup(argv[2]);
+    server_info->path = get_current_dir();
+    if (server_info->path == NULL)
+        my_error("get_current_dir failed");
     if (server_info->path[strlen(server_info->path) - 1] == '/')
         server_info->path[strlen(server_info->path) - 1] = '\0';
     return server_info;
@@ -90,7 +93,7 @@ static void select_wrapper(int max_sd, fd_set *readfds,
         my_error(strerror(errno));
 }
 
-void ftp_loop(int socketFd)
+void ftp_loop(int socketFd, server_info_t server_info)
 {
     fd_set readfds;
     fd_set writefds;
@@ -108,7 +111,7 @@ void ftp_loop(int socketFd)
         select_wrapper(max_sd + 1, &readfds, &writefds, clients);
         if (FD_ISSET(socketFd, &readfds))
             add_new_client(socketFd);
-        loop_clients(clients, &readfds, &writefds);
+        loop_clients(clients, &readfds, &writefds, server_info);
     }
 }
 
@@ -125,7 +128,7 @@ int ftp(int argc, char *argv[])
     prepare_exit(socketFd);
     bind_socket(socketFd, server_info->port);
     listen_socket(socketFd, 1024);
-    ftp_loop(socketFd);
+    ftp_loop(socketFd, server_info);
     close(socketFd);
     return 0;
 }

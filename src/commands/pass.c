@@ -5,6 +5,7 @@
 ** pass
 */
 
+#include "ftp.h"
 #include "clientllist.h"
 #include "reply_code.h"
 #include "accounts.h"
@@ -28,6 +29,10 @@ static void verify_password(client_t client, char *password)
         client->current_code = BAD_COMMAND_SEQUENCE;
         return;
     }
+    if (client->username == NULL) {
+        client->current_code = NOT_LOGGED_IN;
+        return;
+    }
     for (int i = 0; accounts[i].username; i++) {
         if (strcmp(accounts[i].username, client->username) == 0) {
             verify_password_match(client, accounts[i].password, password);
@@ -37,10 +42,12 @@ static void verify_password(client_t client, char *password)
     client->current_code = NOT_LOGGED_IN;
 }
 
-void pass(client_t client, char **args, fd_set *readfds)
+void pass(client_t client, char **args,
+    fd_set *readfds, server_info_t server_info)
 {
     int len = tablen((void **)args);
 
+    (void)server_info;
     (void)readfds;
     switch (len) {
         case 2:

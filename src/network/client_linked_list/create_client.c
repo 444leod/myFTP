@@ -26,6 +26,7 @@ client_t create_client(int fd, char *ip)
     client->command = NULL;
     client->username = NULL;
     client->next_commands = NULL;
+    client->pwd = my_strdup("/");
     client_id++;
     return client;
 }

@@ -6,13 +6,15 @@
 */
 
 #include "clientllist.h"
-#include "ftp.h"
 #include "reply_code.h"
+#include "lib.h"
 #include "accounts.h"
+#include <sys/select.h>
 
 static void verify_user(client_t client, char *username)
 {
-    if (client->status == STATUS_USERNAME_OK) {
+    if (client->status == STATUS_USERNAME_OK ||
+        client->status == STATUS_LOGGED_IN) {
         client->current_code = BAD_COMMAND_SEQUENCE;
         return;
     }

@@ -15,7 +15,7 @@
 static void send_buffer(client_t client)
 {
     if (client->current_code) {
-        reply_code(client->current_code, client->fd);
+        reply_code(client);
         client->current_code = 0;
         if (client->next_commands == NULL) {
             client->data_status = READING;

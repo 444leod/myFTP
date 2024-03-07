@@ -32,6 +32,7 @@ COMMANDS_SRC = user.c \
 	quit.c \
 	unknown_command.c \
 	pass.c \
+	pwd.c \
 
 NETWORK_SRC = get_socket.c \
 	bind_socket.c \

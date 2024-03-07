@@ -29,7 +29,7 @@ int get_socket(void);
 void bind_socket(int socketFd, int port);
 void listen_socket(int socketFd, int maxClients);
 void accept_socket(int socketFd, void (*func)(int));
-void reply_code(int code, int socketFd);
+void reply_code(client_t client);
 void print_fd_set(fd_set *set);
 void loop_clients(client_t *clients, fd_set *readfds, fd_set *writefds);
 void handle_command(client_t client, fd_set *readfds);

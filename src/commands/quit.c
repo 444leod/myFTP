@@ -6,8 +6,9 @@
 */
 
 #include "clientllist.h"
-#include "ftp.h"
+#include "lib.h"
 #include "reply_code.h"
+#include <sys/select.h>
 
 void quit(client_t client, char **args, fd_set *readfds)
 {

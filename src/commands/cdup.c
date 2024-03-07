@@ -28,13 +28,16 @@ static void verify_path(client_t client, char *server_path)
     client->pwd = supercat(2, new_path + strlen(server_path), "/");
 }
 
-static void change_to_parent_directory(client_t client, server_info_t server_info)
+static void change_to_parent_directory(client_t client,
+    server_info_t server_info)
 {
+    char *path = NULL;
+
     if (client->status != STATUS_LOGGED_IN) {
         client->current_code = NOT_LOGGED_IN;
         return;
     }
-    char *path = supercat(2, server_info->path, client->pwd);
+    path = supercat(2, server_info->path, client->pwd);
     chdir(path);
     if (chdir("..") == -1) {
         client->current_code = FILE_UNAVAILABLE;

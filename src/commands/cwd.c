@@ -28,7 +28,8 @@ static void verify_path(client_t client, char *server_path)
     client->pwd = supercat(2, new_path + strlen(server_path), "/");
 }
 
-static void change_working_directory(client_t client, char *path, server_info_t server_info)
+static void change_working_directory(client_t client, char *path,
+    server_info_t server_info)
 {
     char *new_path = NULL;
 

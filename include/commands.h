@@ -12,7 +12,7 @@
 
 typedef struct command_s {
     char *command;
-    void (*func)(client_t , char **, fd_set *, server_info_t);
+    void (*func)(client_t, char **, fd_set *, server_info_t);
 } command_t;
 
 void quit(client_t client, char **args,

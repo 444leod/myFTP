@@ -19,3 +19,5 @@ int tablen(void **tab);
 char *supercat(int n, ...);
 char *my_strndup(char const *src, int n);
 char *get_current_dir(void);
+char *my_snprintf(const char *format, ...);
+char *replace_char(char *str, char find, char replace);

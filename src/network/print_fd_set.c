@@ -8,24 +8,34 @@
 #include <stdio.h>
 #include <sys/select.h>
 #include "debug.h"
+#include "macros.h"
 
-void print_fd_set(fd_set *set)
+UNUSED static void dev_print_fd_set(fd_set *set)
 {
     int fds[FD_SETSIZE] = {0};
     int count = 0;
-    static size_t print = 0;
+    char buffer[1024];
+    int offset = 0;
+    UNUSED static int print = 0;
 
-    print++;
-    if (!DEBUG || print % 2000 != 0)
-        return;
     for (int i = 0; i < FD_SETSIZE; ++i) {
         if (FD_ISSET(i, set)) {
             fds[count] = i;
             count++;
         }
     }
-    printf("[%ld][DEBUG] fds: [", print / 2000);
+    offset += sprintf(buffer + offset, "[DEBUG] fds: [");
     for (int i = 0; i < count - 1; ++i)
-        printf("%d, ", fds[i]);
-    printf("%d]\n", fds[count - 1]);
+        offset += sprintf(buffer + offset, "%d, ", fds[i]);
+    offset += sprintf(buffer + offset, "%d]\n", fds[count - 1]);
+    SOMETIMES_DEBUG(&print, 5000, "%s", buffer);
+}
+
+void print_fd_set(UNUSED fd_set *set)
+{
+    #ifndef DEV_MODE
+    // (void)dev_print_fd_set;
+    #else
+    dev_print_fd_set(set);
+    #endif
 }

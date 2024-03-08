@@ -78,11 +78,10 @@ static void remove_file(client_t client,
 }
 
 void dele(client_t client, char **args,
-    fd_set *readfds, server_info_t server_info)
+    UNUSED fd_set *readfds, server_info_t server_info)
 {
     int len = tablen((void **)args);
 
-    (void)readfds;
     if (is_error(client, len))
         return;
     remove_file(client, server_info, args[1]);

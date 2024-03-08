@@ -52,12 +52,10 @@ static void change_working_directory(client_t client, char *path,
 }
 
 void cwd(client_t client, char **args,
-    fd_set *readfds, server_info_t server_info)
+    UNUSED fd_set *readfds, server_info_t server_info)
 {
     int len = tablen((void **)args);
 
-    (void)readfds;
-    (void)server_info;
     switch (len) {
         case 2:
             change_working_directory(client, args[1], server_info);

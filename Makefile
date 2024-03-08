@@ -30,6 +30,7 @@ LIB_SRC = exit.c \
 	get_current_dir.c \
 	my_snprintf.c \
 	replace_char.c \
+	debug_print.c \
 
 COMMANDS_SRC = commands.c \
 	user.c \
@@ -87,6 +88,9 @@ run: all
 
 debug:
 	$(CC) -o $(NAME) $(SRC) $(CFLAGS) -g
+
+dev:
+	$(CC) -o $(NAME) $(SRC) $(CFLAGS) -g -DDEV_MODE
 
 .PHONY: all clean fclean re
 .SILENT: run

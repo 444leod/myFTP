@@ -14,9 +14,8 @@
 #include <sys/select.h>
 #include <sys/wait.h>
 
-static void handle_sigint(int sig)
+static void handle_sigint(UNUSED int sig)
 {
-    (void)sig;
     my_exit(0);
 }
 
@@ -32,6 +31,7 @@ static server_info_t init_server_info(char *argv[])
         my_error("get_current_dir failed");
     if (server_info->path[strlen(server_info->path) - 1] == '/')
         server_info->path[strlen(server_info->path) - 1] = '\0';
+    DEBUG_PRINT("Server path: %s\n", server_info->path);
     server_info->ip = my_malloc(sizeof(char) * INET_ADDRSTRLEN + 1);
     server_info->ip[INET_ADDRSTRLEN] = '\0';
     return server_info;
@@ -92,12 +92,11 @@ static void add_new_client(int socketFd)
 }
 
 static void select_wrapper(int max_sd, fd_set *readfds,
-    fd_set *writefds, client_t *clients)
+    fd_set *writefds, UNUSED client_t *clients)
 {
     struct timeval timeout = {0, 100};
     int activity = 0;
 
-    (void)clients;
     activity = select(max_sd + 1, readfds, writefds, NULL, &timeout);
     if (activity < 0)
         my_error("select wrapper failed");
@@ -131,12 +130,15 @@ int ftp(int argc, char *argv[])
     server_info_t server_info;
 
     errno = 0;
+    DEBUG_PRINT("FTP server started\n");
     signal(2, handle_sigint);
     check_args(argc, argv);
     server_info = init_server_info(argv);
     socketFd = get_socket();
+    DEBUG_PRINT("Socket fd: %d\n", socketFd);
     prepare_exit(socketFd);
     bind_socket(socketFd, server_info->port, &(server_info->ip));
+    DEBUG_PRINT("Server info: %s:%d\n", server_info->ip, server_info->port);
     listen_socket(socketFd, 1024);
     ftp_loop(socketFd, server_info);
     close(socketFd);

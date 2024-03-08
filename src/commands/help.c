@@ -25,10 +25,8 @@ static void update_help_buffer(client_t client, char **args)
 }
 
 void help(client_t client, char **args,
-    fd_set *readfds, server_info_t server_info)
+    UNUSED fd_set *readfds, UNUSED server_info_t server_info)
 {
-    (void)readfds;
-    (void)server_info;
     client->current_code = HELP_MESSAGE;
     update_help_buffer(client, args);
 }

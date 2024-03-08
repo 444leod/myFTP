@@ -44,7 +44,6 @@ void retr(client_t client, server_info_t server_info, int clientFd)
     char buffer[1024];
     size_t bytesRead = 1;
 
-    (void)server_info;
     if (!file) {
         client->current_code = FILE_UNAVAILABLE;
         return;

@@ -126,11 +126,10 @@ static bool is_error_case(client_t client, server_info_t server_info,
 }
 
 void transfer_commands(client_t client, char **args,
-    fd_set *readfds, server_info_t server_info)
+    UNUSED fd_set *readfds, server_info_t server_info)
 {
     int len = tablen((void **)args);
 
-    (void)readfds;
     if (is_error_case(client, server_info, len, args))
         return;
     execute_fork(client, args, server_info);

@@ -38,6 +38,12 @@ void pasv(client_t client, char **args,
     fd_set *readfds, server_info_t server_info);
 void transfer_commands(client_t client, char **args,
     fd_set *readfds, server_info_t server_info);
+void dele(client_t client, char **args,
+    fd_set *readfds, server_info_t server_info);
+void help(client_t client, char **args,
+    fd_set *readfds, server_info_t server_info);
+void noop(client_t client, char **args,
+    fd_set *readfds, server_info_t server_info);
 
 void list(client_t client, server_info_t server_info, int clientFd);
 

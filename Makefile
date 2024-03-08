@@ -42,6 +42,7 @@ COMMANDS_SRC = commands.c \
 	pasv.c \
 	list.c \
 	transfer_commands.c \
+	noop.c \
 
 NETWORK_SRC = get_socket.c \
 	bind_socket.c \

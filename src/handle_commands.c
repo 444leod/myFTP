@@ -8,6 +8,7 @@
 #include "clientllist.h"
 #include <sys/select.h>
 #include "commands.h"
+#include "reply_code.h"
 #include "lib.h"
 #include "ftp.h"
 #include <unistd.h>
@@ -18,6 +19,10 @@ static void execute_command(char **command, client_t client,
 {
     size_t i = 0;
 
+    if (command[0] == NULL) {
+        unknown_command(client, command, readfds, server_info);
+        return;
+    }
     for (; commands[i].command; i++) {
         if (strcmp(commands[i].command, command[0]) == 0) {
             commands[i].func(client, command, readfds, server_info);
@@ -37,8 +42,6 @@ void handle_command(client_t client, fd_set *readfds,
         my_free(client->command);
     while (args[0] && args[0][0] == '\0')
         args++;
-    if (args[0] == NULL || args[0][0] == '\0')
-        return;
     execute_command(args, client, readfds, server_info);
     if (client->data_status == WAITING_FOR_FORK)
         return;

@@ -25,7 +25,7 @@ static bool is_error(client_t client, int len)
         return true;
     }
     if (len != 2) {
-        client->current_code = SYNTAX_ERROR_IN_PARAMETERS;
+        client->current_code = FILE_UNAVAILABLE;
         return true;
     }
     return false;

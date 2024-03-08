@@ -54,6 +54,7 @@ void noop(client_t client, char **args,
 void list(client_t client, server_info_t server_info, int clientFd);
 bool is_list_error(client_t client, server_info_t server_info, char **args);
 void retr(client_t client, server_info_t server_info, int clientFd);
+bool is_retr_error(client_t client, server_info_t server_info, char **args);
 
 extern const command_t commands[];
 extern const data_command_t data_commands[];

@@ -16,10 +16,8 @@
 static void do_command(client_t client,
     server_info_t server_info, int clientFd)
 {
-    char **args = str_to_word_array(client->command, " \t");
-
     for (int i = 0; data_commands[i].command; i++) {
-        if (strcmp(args[0], data_commands[i].command) == 0) {
+        if (strcmp(client->args[0], data_commands[i].command) == 0) {
             data_commands[i].func(client, server_info, clientFd);
             return;
         }

@@ -35,7 +35,7 @@ const data_command_t data_commands[] = {
 
 const data_command_verify_t data_commands_verif[] = {
     { "LIST", &is_list_error },
-    // { "RETR", NULL },
+    { "RETR", &is_retr_error },
     // { "STOR", NULL },
     { NULL, NULL }
 };

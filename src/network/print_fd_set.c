@@ -13,8 +13,10 @@ void print_fd_set(fd_set *set)
 {
     int fds[FD_SETSIZE] = {0};
     int count = 0;
+    static size_t print = 0;
 
-    if (!DEBUG)
+    print++;
+    if (!DEBUG || print % 2000 != 0)
         return;
     for (int i = 0; i < FD_SETSIZE; ++i) {
         if (FD_ISSET(i, set)) {
@@ -22,7 +24,7 @@ void print_fd_set(fd_set *set)
             count++;
         }
     }
-    printf("[DEBUG] fds: [");
+    printf("[%ld][DEBUG] fds: [", print / 2000);
     for (int i = 0; i < count - 1; ++i)
         printf("%d, ", fds[i]);
     printf("%d]\n", fds[count - 1]);

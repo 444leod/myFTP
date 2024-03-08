@@ -13,6 +13,22 @@
 #include <sys/select.h>
 #include <stdbool.h>
 
+static int wait_for_select(int clientFd, client_t client)
+{
+    fd_set writefds;
+    int ret;
+
+    FD_ZERO(&writefds);
+    FD_SET(clientFd, &writefds);
+    ret = select(clientFd + 1, NULL, &writefds, NULL, NULL);
+    if (ret == -1) {
+        client->current_code = FILE_UNAVAILABLE;
+        reply_code(client);
+        return -1;
+    }
+    return 0;
+}
+
 FILE *get_ls_result(server_info_t server_info, client_t client)
 {
     char *path = tablen((void **)client->args) == 2 ? client->args[1] : "/.";
@@ -36,7 +52,6 @@ void list(client_t client, server_info_t server_info, int clientFd)
 {
     FILE *ls = get_ls_result(server_info, client);
     char buffer[1024] = {0};
-    fd_set writefds;
 
     if (ls == NULL) {
         client->current_code = FILE_UNAVAILABLE;
@@ -44,13 +59,8 @@ void list(client_t client, server_info_t server_info, int clientFd)
         return;
     }
     while (fgets(buffer, 1024, ls) != NULL) {
-        FD_ZERO(&writefds);
-        FD_SET(clientFd, &writefds);
-        if (select(clientFd + 1, NULL, &writefds, NULL, NULL) == -1) {
-            client->current_code = CANT_OPEN_DATA_CONNECTION;
-            reply_code(client);
+        if (wait_for_select(clientFd, client) == -1)
             return;
-        }
         write(clientFd, buffer, strlen(buffer));
     }
     close_all(ls, clientFd, client);

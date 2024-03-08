@@ -12,6 +12,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/select.h>
+#include <sys/wait.h>
 
 static void handle_sigint(int sig)
 {
@@ -31,7 +32,25 @@ static server_info_t init_server_info(char *argv[])
         my_error("get_current_dir failed");
     if (server_info->path[strlen(server_info->path) - 1] == '/')
         server_info->path[strlen(server_info->path) - 1] = '\0';
+    server_info->ip = my_malloc(sizeof(char) * INET_ADDRSTRLEN + 1);
+    server_info->ip[INET_ADDRSTRLEN] = '\0';
     return server_info;
+}
+
+static void update_fork_status(client_t client)
+{
+    int status = 0;
+    int result = waitpid(client->external_socket->pid, &status, WNOHANG);
+
+    if (result == 0)
+        return;
+    if (result == -1)
+        my_error("waitpid failed");
+    client->data_status = WRITING;
+    client->current_code = 226;
+    client->external_socket->mode = NO_MODE;
+    client->external_socket->fd = -1;
+    client->external_socket->port = -1;
 }
 
 static void add_clients_to_set(
@@ -43,6 +62,8 @@ static void add_clients_to_set(
     client_t tmp = *clients;
 
     while (tmp) {
+        if (tmp->data_status == WAITING_FOR_FORK)
+            update_fork_status(tmp);
         if (tmp->data_status == READING)
             FD_SET(tmp->fd, readfds);
         if (tmp->data_status == WRITING)
@@ -63,7 +84,7 @@ static void add_new_client(int socketFd)
     new_socket = accept(socketFd, (struct sockaddr *)&address,
         (socklen_t *)&addrlen);
     if (new_socket < 0)
-        my_error(strerror(errno));
+        my_error("new client: accept failed");
     if (*clients == NULL)
         *clients = create_client(new_socket, inet_ntoa(address.sin_addr));
     else
@@ -75,22 +96,11 @@ static void select_wrapper(int max_sd, fd_set *readfds,
 {
     struct timeval timeout = {0, 100};
     int activity = 0;
-    client_t tmp = *clients;
-    char is_blocking = 1;
 
-    while (tmp) {
-        if (tmp->data_status == PROCESSING) {
-            is_blocking = 0;
-            break;
-        }
-        tmp = tmp->next;
-    }
-    if (is_blocking)
-        activity = select(max_sd + 1, readfds, writefds, NULL, NULL);
-    else
-        activity = select(max_sd + 1, readfds, writefds, NULL, &timeout);
+    (void)clients;
+    activity = select(max_sd + 1, readfds, writefds, NULL, &timeout);
     if (activity < 0)
-        my_error(strerror(errno));
+        my_error("select wrapper failed");
 }
 
 void ftp_loop(int socketFd, server_info_t server_info)
@@ -126,7 +136,7 @@ int ftp(int argc, char *argv[])
     server_info = init_server_info(argv);
     socketFd = get_socket();
     prepare_exit(socketFd);
-    bind_socket(socketFd, server_info->port);
+    bind_socket(socketFd, server_info->port, &(server_info->ip));
     listen_socket(socketFd, 1024);
     ftp_loop(socketFd, server_info);
     close(socketFd);

@@ -80,6 +80,21 @@ static bool display_pwd(client_t client, int socketFd, int code)
     return true;
 }
 
+static bool special_reply_codes2(client_t client, int code, int socketFd)
+{
+    switch (code) {
+        case PATHNAME_CREATED:
+            return display_pwd(client, socketFd, code);
+        case ENTERING_PASSIVE_MODE:
+            dprintf(socketFd, serverMessages[8].message, code, client->buffer);
+            return true;
+        case SERVICE_CLOSING_CONTROL_CONNECTION:
+            dprintf(socketFd, serverMessages[6].message, code);
+            remove_client(client->fd);
+            return true;
+    }
+}
+
 static bool special_reply_code(client_t client)
 {
     int socketFd = client->fd;
@@ -93,14 +108,9 @@ static bool special_reply_code(client_t client)
             dprintf(socketFd, serverMessages[4].message, code);
             return true;
         case PATHNAME_CREATED:
-            return display_pwd(client, socketFd, code);
         case ENTERING_PASSIVE_MODE:
-            dprintf(socketFd, serverMessages[8].message, code, client->buffer);
-            return true;
         case SERVICE_CLOSING_CONTROL_CONNECTION:
-            dprintf(socketFd, serverMessages[6].message, code);
-            remove_client(client->fd);
-            return true;
+            return special_reply_codes2(client, code, socketFd);
     }
     return false;
 }

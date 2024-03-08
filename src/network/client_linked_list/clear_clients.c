@@ -20,8 +20,6 @@ void clear_clients(void)
             close(tmp->fd);
         }
         *clients = tmp->next;
-        if (tmp)
-            my_free(tmp);
         tmp = *clients;
     }
 }

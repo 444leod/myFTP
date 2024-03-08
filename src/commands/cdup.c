@@ -10,7 +10,6 @@
 #include "reply_code.h"
 #include "lib.h"
 #include <sys/select.h>
-#include <unistd.h>
 
 static void verify_path(client_t client, char *server_path)
 {

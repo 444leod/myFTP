@@ -23,7 +23,7 @@ const server_message_s serverMessages[] = {
     {COMMAND_OK,
         "%d Command okay.\n"},
     {HELP_MESSAGE,
-        "%d Help message.\n"},
+        "%d-%s\n%d Help message.\n"},
     {SERVICE_READY_NEW_USER,
         "%d Service ready for new user.\n"},
     {SERVICE_CLOSING_CONTROL_CONNECTION,
@@ -92,6 +92,10 @@ static bool special_reply_codes2(client_t client, int code, int socketFd)
             dprintf(socketFd, serverMessages[6].message, code);
             remove_client(client->fd);
             return true;
+        case HELP_MESSAGE:
+            dprintf(socketFd, serverMessages[4].message, code,
+                client->buffer, code);
+            return true;
     }
     return false;
 }
@@ -106,8 +110,6 @@ static bool special_reply_code(client_t client)
             dprintf(socketFd, serverMessages[0].message, code, 0);
             return true;
         case HELP_MESSAGE:
-            dprintf(socketFd, serverMessages[4].message, code);
-            return true;
         case PATHNAME_CREATED:
         case ENTERING_PASSIVE_MODE:
         case SERVICE_CLOSING_CONTROL_CONNECTION:

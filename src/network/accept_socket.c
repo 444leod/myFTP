@@ -16,6 +16,6 @@ void accept_socket(int sockFd, void (*func)(int))
 
     clientFd = accept(sockFd, (struct sockaddr *)&clientAddress, &len);
     if (clientFd < 0)
-        my_error(strerror(errno));
+        my_error(supercat(2, "accept failed: ", strerror(errno)));
     func(clientFd);
 }

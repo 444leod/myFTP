@@ -12,10 +12,8 @@
 #include <sys/select.h>
 
 void quit(client_t client, char **args,
-    fd_set *readfds, server_info_t server_info)
+    UNUSED fd_set *readfds, UNUSED server_info_t server_info)
 {
-    (void)server_info;
-    (void)readfds;
     if (tablen((void **)args) != 1) {
         client->current_code = SYNTAX_ERROR;
         return;

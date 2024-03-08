@@ -38,11 +38,9 @@ static void create_data_socket(client_t client)
     listen_socket(client->external_socket->fd, 1);
 }
 
-void pasv(client_t client, char **args,
-    fd_set *readfds, server_info_t server_info)
+void pasv(client_t client, UNUSED char **args,
+    UNUSED fd_set *readfds, server_info_t server_info)
 {
-    (void)args;
-    (void)readfds;
     if (client->status != STATUS_LOGGED_IN) {
         client->current_code = NOT_LOGGED_IN;
         return;

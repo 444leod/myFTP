@@ -36,12 +36,10 @@ static void verify_user(client_t client, char *username)
 }
 
 void user(client_t client, char **args,
-    fd_set *readfds, server_info_t server_info)
+    UNUSED fd_set *readfds, UNUSED server_info_t server_info)
 {
     int len = tablen((void **)args);
 
-    (void)server_info;
-    (void)readfds;
     switch (len) {
         case 2:
             verify_user(client, args[1]);

@@ -18,7 +18,9 @@
 #include <arpa/inet.h>
 #include "lib.h"
 #include "clientllist.h"
+#include "debug.h"
 #include "garbage_collector.h"
+#include "macros.h"
 
 typedef struct server_info_s {
     int port;

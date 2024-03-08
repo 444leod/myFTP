@@ -43,12 +43,10 @@ static void verify_password(client_t client, char *password)
 }
 
 void pass(client_t client, char **args,
-    fd_set *readfds, server_info_t server_info)
+    UNUSED fd_set *readfds, UNUSED server_info_t server_info)
 {
     int len = tablen((void **)args);
 
-    (void)server_info;
-    (void)readfds;
     switch (len) {
         case 2:
             verify_password(client, args[1]);

@@ -45,12 +45,9 @@ static void change_to_parent_directory(client_t client,
     verify_path(client, server_info->path);
 }
 
-void cdup(client_t client, char **args,
-    fd_set *readfds, server_info_t server_info)
+void cdup(client_t client, UNUSED char **args,
+    UNUSED fd_set *readfds, server_info_t server_info)
 {
-    (void)readfds;
-    (void)server_info;
-    (void)args;
     change_to_parent_directory(client, server_info);
     chdir(server_info->path);
 }

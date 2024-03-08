@@ -16,10 +16,8 @@
 static void do_command(client_t client,
     server_info_t server_info, int clientFd)
 {
-    char **args = str_to_word_array(client->command, " \t");
-
     for (int i = 0; data_commands[i].command; i++) {
-        if (strcmp(args[0], data_commands[i].command) == 0) {
+        if (strcmp(client->args[0], data_commands[i].command) == 0) {
             data_commands[i].func(client, server_info, clientFd);
             return;
         }
@@ -105,7 +103,8 @@ static void execute_fork(client_t client, char **args,
     fork_loop(client, server_info);
 }
 
-static bool is_error_case(client_t client, int len)
+static bool is_error_case(client_t client, server_info_t server_info,
+    int len, char **args)
 {
     if (len > 2) {
         client->current_code = SYNTAX_ERROR;
@@ -119,16 +118,19 @@ static bool is_error_case(client_t client, int len)
         client->current_code = CANT_OPEN_DATA_CONNECTION;
         return true;
     }
-    return false;
+    for (int i = 0; data_commands_verif[i].command; i++)
+        if (strcmp(args[0], data_commands_verif[i].command) == 0)
+            return data_commands_verif[i].func(client, server_info, args);
+    printf("Missing command in verif table\n");
+    return true;
 }
 
 void transfer_commands(client_t client, char **args,
-    fd_set *readfds, server_info_t server_info)
+    UNUSED fd_set *readfds, server_info_t server_info)
 {
     int len = tablen((void **)args);
 
-    (void)readfds;
-    if (is_error_case(client, len))
+    if (is_error_case(client, server_info, len, args))
         return;
     execute_fork(client, args, server_info);
     client->data_status = WAITING_FOR_FORK;

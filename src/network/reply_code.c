@@ -10,6 +10,8 @@
 #include <stdbool.h>
 #include "reply_code.h"
 #include "clientllist.h"
+#include "lib.h"
+#include "garbage_collector.h"
 
 const server_message_s serverMessages[] = {
     {SERVICE_READY,
@@ -29,7 +31,7 @@ const server_message_s serverMessages[] = {
     {CLOSING_DATA_CONNECTION,
         "%d Closing data connection.\n"},
     {ENTERING_PASSIVE_MODE,
-        "%d Entering Passive Mode (h1,h2,h3,h4,p1,p2).\n"},
+        "%d Entering Passive Mode (%s).\n"},
     {USER_LOGGED_IN,
         "%d User logged in, proceed.\n"},
     {REQUESTED_FILE_ACTION_COMPLETED,
@@ -62,8 +64,21 @@ const server_message_s serverMessages[] = {
         "%d Exceeded storage allocation.\n"},
     {BAD_FILENAME,
         "%d Bad filename.\n"},
+    {CANT_OPEN_DATA_CONNECTION,
+        "%d Can't open data connection.\n"},
     {-1, (void *)0}
 };
+
+static bool display_pwd(client_t client, int socketFd, int code)
+{
+    char *pwd = my_strdup(client->pwd);
+
+    if (strlen(pwd) > 2 && pwd[strlen(pwd) - 1] == '/')
+        pwd[strlen(pwd) - 1] = '\0';
+    dprintf(socketFd, serverMessages[11].message, code, pwd);
+    my_free(pwd);
+    return true;
+}
 
 static bool special_reply_code(client_t client)
 {
@@ -78,7 +93,13 @@ static bool special_reply_code(client_t client)
             dprintf(socketFd, serverMessages[4].message, code);
             return true;
         case PATHNAME_CREATED:
-            dprintf(socketFd, serverMessages[11].message, code, client->pwd);
+            return display_pwd(client, socketFd, code);
+        case ENTERING_PASSIVE_MODE:
+            dprintf(socketFd, serverMessages[8].message, code, client->buffer);
+            return true;
+        case SERVICE_CLOSING_CONTROL_CONNECTION:
+            dprintf(socketFd, serverMessages[6].message, code);
+            remove_client(client->fd);
             return true;
     }
     return false;

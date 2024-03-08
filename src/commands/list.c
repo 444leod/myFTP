@@ -55,3 +55,36 @@ void list(client_t client, server_info_t server_info, int clientFd)
     }
     close_all(ls, clientFd, client);
 }
+
+static bool is_path_not_correct(char *path, char *server_path)
+{
+    char *folder = NULL;
+
+    if (chdir(path) == -1) {
+        chdir(server_path);
+        return true;
+    }
+    folder = get_current_dir();
+    if (strncmp(folder, server_path, strlen(server_path)) != 0) {
+        chdir(server_path);
+        return true;
+    }
+    chdir(server_path);
+    return false;
+}
+
+bool is_list_error(client_t client, server_info_t server_info, char **args)
+{
+    char *path = NULL;
+    char *arg = args[1] ? args[1] : "/.";
+
+    if (arg[0] == '/')
+        path = supercat(2, server_info->path, arg);
+    else
+        path = supercat(3, server_info->path, client->pwd, arg);
+    if (is_path_not_correct(path, server_info->path)) {
+        client->current_code = FILE_UNAVAILABLE;
+        return true;
+    }
+    return false;
+}

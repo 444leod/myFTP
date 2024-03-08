@@ -71,7 +71,6 @@ static void remove_file(client_t client,
         client->current_code = FILE_UNAVAILABLE;
         return;
     }
-    printf("path: %s\n", path);
     if (remove(path) == 0)
         client->current_code = REQUESTED_FILE_ACTION_COMPLETED;
     else

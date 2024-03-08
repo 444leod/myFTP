@@ -17,7 +17,6 @@ static char *my_strcat(char *dest, char *src)
 
     strcpy(tmp, dest);
     strcat(tmp, src);
-    free(dest);
     return tmp;
 }
 

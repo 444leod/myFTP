@@ -35,7 +35,7 @@ static void read_buffer(client_t client)
 
     valread = read(client->fd, buffer, 1024);
     if (valread == -1)
-        my_error(strerror(errno));
+        my_error(supercat(2, "read failed: ", strerror(errno)));
     if (valread == 0) {
         remove_client(client->fd);
         return;

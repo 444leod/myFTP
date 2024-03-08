@@ -20,7 +20,7 @@ void bind_socket(int socketFd, int port, char **ip)
     bindRes = bind(socketFd, (const struct sockaddr *)&serverAddress,
         sizeof(serverAddress));
     if (bindRes == -1 || errno != 0)
-        my_error("bind failed");
+        my_error(supercat(2, "bind failed: ", strerror(errno)));
     inet_ntop(AF_INET, &(serverAddress.sin_addr),
         *ip, INET_ADDRSTRLEN);
 }

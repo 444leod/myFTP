@@ -77,6 +77,8 @@ static void execute_mode(client_t client, server_info_t server_info)
         case ACTIVE:
             active_mode(client, server_info);
             break;
+        default:
+            break;
     }
 }
 

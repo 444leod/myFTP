@@ -93,6 +93,7 @@ static bool special_reply_codes2(client_t client, int code, int socketFd)
             remove_client(client->fd);
             return true;
     }
+    return false;
 }
 
 static bool special_reply_code(client_t client)

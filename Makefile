@@ -28,14 +28,20 @@ LIB_SRC = exit.c \
 	tablen.c \
 	supercat.c \
 	get_current_dir.c \
+	my_snprintf.c \
+	replace_char.c \
 
-COMMANDS_SRC = user.c \
+COMMANDS_SRC = commands.c \
+	user.c \
 	quit.c \
 	unknown_command.c \
 	pass.c \
 	pwd.c \
 	cwd.c \
 	cdup.c \
+	pasv.c \
+	list.c \
+	transfer_commands.c \
 
 NETWORK_SRC = get_socket.c \
 	bind_socket.c \
@@ -43,12 +49,14 @@ NETWORK_SRC = get_socket.c \
 	accept_socket.c \
 	reply_code.c \
 	print_fd_set.c \
+	get_port.c \
 
 CLIENT_LLIST_SRC = add_client.c \
 	create_client.c \
 	remove_client.c \
 	get_clients.c \
 	clear_clients.c \
+	create_external_socket.c \
 
 OBJ = $(SRC:.c=.o)
 

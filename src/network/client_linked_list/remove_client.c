@@ -6,7 +6,18 @@
 */
 
 #include "clientllist.h"
+#include "garbage_collector.h"
 #include <unistd.h>
+
+static void destroy_fds(client_t tmp)
+{
+    if (tmp->fd != -1) {
+        close(tmp->fd);
+    }
+    if (tmp->external_socket->fd != -1) {
+        close(tmp->external_socket->fd);
+    }
+}
 
 void remove_client(int fd)
 {
@@ -16,7 +27,7 @@ void remove_client(int fd)
 
     if (tmp && tmp->fd == fd) {
         *clients = tmp->next;
-        close(fd);
+        destroy_fds(tmp);
         return;
     }
     while (tmp && tmp->fd != fd) {
@@ -25,6 +36,7 @@ void remove_client(int fd)
     }
     if (!tmp)
         return;
+    destroy_fds(tmp);
     prev->next = tmp->next;
-    free(tmp);
+    my_free(tmp);
 }

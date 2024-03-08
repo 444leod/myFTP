@@ -5,9 +5,9 @@
 ** get_current_dir
 */
 
-#include "garbage_collector.h"
 #include <unistd.h>
 #include <stdio.h>
+#include "garbage_collector.h"
 
 char *get_current_dir(void)
 {

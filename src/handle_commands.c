@@ -33,7 +33,14 @@ void handle_command(client_t client, fd_set *readfds,
     char *command = my_strdup(client->command);
     char **args = str_to_word_array(command, " \t");
 
-    free(client->command);
+    if (client->command)
+        my_free(client->command);
+    while (args[0] && args[0][0] == '\0')
+        args++;
+    if (args[0] == NULL || args[0][0] == '\0')
+        return;
     execute_command(args, client, readfds, server_info);
+    if (client->data_status == WAITING_FOR_FORK)
+        return;
     client->data_status = WRITING;
 }

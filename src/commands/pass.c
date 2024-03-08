@@ -26,7 +26,7 @@ static void verify_password_match(client_t client, char *account_password,
 static void verify_password(client_t client, char *password)
 {
     if (client->status != STATUS_USERNAME_OK) {
-        client->current_code = BAD_COMMAND_SEQUENCE;
+        client->current_code = STATUS_LOGGED_IN;
         return;
     }
     if (client->username == NULL) {

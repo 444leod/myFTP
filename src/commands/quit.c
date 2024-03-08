@@ -21,5 +21,4 @@ void quit(client_t client, char **args,
         return;
     }
     client->current_code = SERVICE_CLOSING_CONTROL_CONNECTION;
-    remove_client(client->fd);
 }

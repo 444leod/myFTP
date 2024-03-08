@@ -63,7 +63,7 @@ void cwd(client_t client, char **args,
             change_working_directory(client, args[1], server_info);
             break;
         default:
-            client->current_code = SYNTAX_ERROR_IN_PARAMETERS;
+            client->current_code = FILE_UNAVAILABLE;
             break;
     }
     chdir(server_info->path);

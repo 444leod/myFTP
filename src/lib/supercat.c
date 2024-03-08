@@ -8,8 +8,8 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
-#include "garbage_collector.h"
 #include "lib.h"
+#include "garbage_collector.h"
 
 static char *my_strcat(char *dest, char *src)
 {

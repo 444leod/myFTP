@@ -5,8 +5,8 @@
 ** garbage_collector
 */
 
-#include "garbage_collector.h"
 #include "lib.h"
+#include "garbage_collector.h"
 
 static garbage_node_t *get_garbage(void)
 {
@@ -75,7 +75,5 @@ void clear_garbage_collector(void)
         *list = (*list)->next;
         if (tmp->ptr)
             free(tmp->ptr);
-        if (tmp)
-            free(tmp);
     }
 }

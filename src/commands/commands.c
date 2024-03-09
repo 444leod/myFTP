@@ -21,8 +21,8 @@ const command_t commands[] = {
     {"NOOP", &noop},
     {"RETR", &transfer_commands},
     {"STOR", &transfer_commands},
-    // {"STOR", NULL},
     {"LIST", &transfer_commands},
+    {"TYPE", &type},
     {NULL, &unknown_command}
 };
 

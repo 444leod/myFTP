@@ -47,6 +47,7 @@ COMMANDS_SRC = commands.c \
 	dele.c \
 	help.c \
 	retr.c \
+	stor.c \
 
 NETWORK_SRC = get_socket.c \
 	bind_socket.c \

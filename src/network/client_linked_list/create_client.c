@@ -17,6 +17,15 @@ static void initialize_client_buffers(client_t client)
     client->buffer = NULL;
 }
 
+static int get_status(void)
+{
+    #if DEV_MODE
+    return STATUS_LOGGED_IN;
+    #else
+    return STATUS_NOT_LOGGED_IN;
+    #endif
+}
+
 client_t create_client(int fd, char *ip)
 {
     client_t client = my_malloc(sizeof(struct client_s));
@@ -29,7 +38,7 @@ client_t create_client(int fd, char *ip)
     client->ip = ip;
     client->next = NULL;
     client->id = client_id;
-    client->status = STATUS_NOT_LOGGED_IN;
+    client->status = get_status();
     client->data_status = WRITING;
     client->current_code = 220;
     client->pwd = my_strdup("/");

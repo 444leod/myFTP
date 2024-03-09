@@ -28,7 +28,7 @@ UNUSED static void dev_print_fd_set(fd_set *set)
     for (int i = 0; i < count - 1; ++i)
         offset += sprintf(buffer + offset, "%d, ", fds[i]);
     offset += sprintf(buffer + offset, "%d]\n", fds[count - 1]);
-    SOMETIMES_DEBUG(&print, 5000, "%s", buffer, __LINE__);
+    SOMETIMES_DEBUG(&print, 5000, "%s", buffer);
 }
 
 void print_fd_set(UNUSED fd_set *set)

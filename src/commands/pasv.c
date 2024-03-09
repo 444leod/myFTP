@@ -49,6 +49,5 @@ void pasv(client_t client, UNUSED char **args,
     client->external_socket->mode = PASSIVE;
     create_data_socket(client);
     update_client_buffer(client, server_info);
-    if (DEBUG)
-        printf("port: %d\n", client->external_socket->port);
+    DEBUG_PRINT("port: %d\n", client->external_socket->port);
 }

@@ -20,7 +20,7 @@ const command_t commands[] = {
     {"HELP", &help},
     {"NOOP", &noop},
     {"RETR", &transfer_commands},
-    // {"STOR", &transfer_commands},
+    {"STOR", &transfer_commands},
     // {"STOR", NULL},
     {"LIST", &transfer_commands},
     {NULL, &unknown_command}
@@ -29,13 +29,13 @@ const command_t commands[] = {
 const data_command_t data_commands[] = {
     { "LIST", &list },
     { "RETR", &retr },
-    // { "STOR", NULL },
+    { "STOR", &stor },
     { NULL, NULL }
 };
 
 const data_command_verify_t data_commands_verif[] = {
     { "LIST", &is_list_error },
     { "RETR", &is_retr_error },
-    // { "STOR", NULL },
+    { "STOR", &is_stor_error },
     { NULL, NULL }
 };

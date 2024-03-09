@@ -49,6 +49,7 @@ COMMANDS_SRC = commands.c \
 	retr.c \
 	stor.c \
 	type.c \
+	port.c \
 
 NETWORK_SRC = get_socket.c \
 	bind_socket.c \

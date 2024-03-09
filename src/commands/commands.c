@@ -16,7 +16,7 @@ const command_t commands[] = {
     {"DELE", &dele},
     {"PWD", &pwd},
     {"PASV", &pasv},
-    // {"PORT", NULL},
+    {"PORT", &port},
     {"HELP", &help},
     {"NOOP", &noop},
     {"RETR", &transfer_commands},

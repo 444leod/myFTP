@@ -50,6 +50,10 @@ void help(client_t client, char **args,
     fd_set *readfds, server_info_t server_info);
 void noop(client_t client, char **args,
     fd_set *readfds, server_info_t server_info);
+void type(client_t client, char **args,
+    fd_set *readfds, server_info_t server_info);
+void port(client_t client, char **args,
+    fd_set *readfds, server_info_t server_info);
 
 void list(client_t client, server_info_t server_info, int clientFd);
 bool is_list_error(client_t client, server_info_t server_info, char **args);

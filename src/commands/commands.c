@@ -16,13 +16,13 @@ const command_t commands[] = {
     {"DELE", &dele},
     {"PWD", &pwd},
     {"PASV", &pasv},
-    // {"PORT", NULL},
+    {"PORT", &port},
     {"HELP", &help},
     {"NOOP", &noop},
     {"RETR", &transfer_commands},
     {"STOR", &transfer_commands},
-    // {"STOR", NULL},
     {"LIST", &transfer_commands},
+    {"TYPE", &type},
     {NULL, &unknown_command}
 };
 

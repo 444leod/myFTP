@@ -23,6 +23,7 @@ SRC_SRC = ftp.c \
 LIB_SRC = exit.c \
 	my_error.c \
 	garbage_collector.c \
+	garbage_llist.c \
 	my_strdup.c \
 	str_to_word_array.c \
 	tablen.c \

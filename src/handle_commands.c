@@ -38,10 +38,8 @@ void handle_command(client_t client, fd_set *readfds,
     char *command = my_strdup(client->command);
     char **args = str_to_word_array(command, " \t");
 
-    if (client->command)
-        my_free(client->command);
     while (args[0] && args[0][0] == '\0')
-        args++;
+        ++args;
     execute_command(args, client, readfds, server_info);
     if (client->data_status == WAITING_FOR_FORK)
         return;

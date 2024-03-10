@@ -92,7 +92,7 @@ static void fork_loop(client_t client, server_info_t server_info)
     client->external_socket->pid = pid;
     if (pid == 0) {
         execute_mode(client, server_info);
-        exit(0);
+        my_exit(0);
     }
 }
 

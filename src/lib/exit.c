@@ -20,7 +20,7 @@ static void my_clean_exit(int status, int fd)
     if (actualFd != -1)
         close(actualFd);
     clear_clients();
-    clear_garbage_collector();
+    my_free_all();
     exit(status);
 }
 

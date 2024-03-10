@@ -1,79 +1,64 @@
 /*
-** EPITECH PROJECT, 2024
-** myFTP
+** EPITECH PROJECT, 2023
+** garbage_collector
 ** File description:
 ** garbage_collector
 */
 
-#include "lib.h"
 #include "garbage_collector.h"
-
-static garbage_node_t *get_garbage(void)
-{
-    static garbage_node_t list = NULL;
-
-    return &list;
-}
-
-static void add_to_garbage_collector(void *ptr)
-{
-    garbage_node_t *list = get_garbage();
-    garbage_node_t new_node = malloc(sizeof(struct garbage_node_s));
-
-    if (!new_node)
-        my_exit(84);
-    new_node->ptr = ptr;
-    new_node->next = NULL;
-    if (!*list) {
-        *list = new_node;
-        return;
-    }
-    while ((*list)->next)
-        *list = (*list)->next;
-    (*list)->next = new_node;
-}
-
-void my_free(void *ptr)
-{
-    garbage_node_t *list = get_garbage();
-    garbage_node_t tmp = *list;
-    garbage_node_t prev = NULL;
-
-    while (tmp) {
-        if (tmp->ptr != ptr) {
-            prev = tmp;
-            tmp = tmp->next;
-            continue;
-        }
-        if (prev)
-            prev->next = tmp->next;
-        else
-            *list = tmp->next;
-        free(tmp->ptr);
-        free(tmp);
-        return;
-    }
-}
+#include "lib.h"
 
 void *my_malloc(size_t size)
 {
-    void *ptr = malloc(size);
+    void *variable = malloc(size);
+    g_llist_t *llist = get_llist();
 
-    if (!ptr)
-        my_exit(84);
-    add_to_garbage_collector(ptr);
-    return ptr;
+    if (variable == NULL)
+        my_error("Malloc failed");
+    *llist = g_insert_end(variable, *llist);
+    if (*llist == NULL)
+        my_error("Malloc failed");
+    return variable;
 }
 
-void clear_garbage_collector(void)
+void my_free(void *pointer)
 {
-    garbage_node_t *list = get_garbage();
-    garbage_node_t tmp = *list;
+    g_llist_t *llist = get_llist();
+    g_llist_t temp;
 
-    while (*list) {
-        tmp = *list;
-        *list = (*list)->next;
-        if (tmp->ptr)
-            free(tmp->ptr);
+    if ((*llist)->data == pointer) {
+        *llist = g_delete_begin(*llist);
+        return;
     }
+    temp = (*llist)->next;
+    while (temp != *llist) {
+        if (temp->data == pointer) {
+            temp = g_delete_begin(temp);
+            return;
+        }
+        temp = temp->next;
+    }
+    free(pointer);
+}
+
+void my_free_all(void)
+{
+    g_llist_t *llist = get_llist();
+
+    while (*llist)
+        *llist = g_delete_begin(*llist);
+}
+
+void *force_malloc(size_t size)
+{
+    void *variable = malloc(size);
+
+    if (variable == NULL)
+        my_error("Malloc failed");
+    return variable;
+}
+
+void force_free(void *pointer)
+{
+    free(pointer);
 }

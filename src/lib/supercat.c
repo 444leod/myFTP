@@ -20,6 +20,15 @@ static char *my_strcat(char *dest, char *src)
     return tmp;
 }
 
+/**
+ * @brief Concatenate multiple strings
+ * @details Concatenate multiple strings into one using va_args
+ *
+ * @param n the number of strings to concatenate
+ * @param ... the strings to concatenate
+ *
+ * @return the concatenated string
+*/
 char *supercat(int n, ...)
 {
     va_list ap;

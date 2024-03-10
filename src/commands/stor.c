@@ -10,6 +10,15 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 
+/**
+ * @brief Wait for select
+ * @details Wait the user socket to be ready to write
+ *
+ * @param clientFd the client file descriptor
+ * @param client the client to wait for select
+ *
+ * @return int 0 if success, -1 if error
+ */
 static int wait_for_select(int clientFd, client_t client)
 {
     fd_set readfds;
@@ -26,6 +35,15 @@ static int wait_for_select(int clientFd, client_t client)
     return 0;
 }
 
+/**
+ * @brief Get the path from the arguments
+ * @details Get the path from the arguments
+ * based on the server path and the client pwd
+ *
+ * @param client the client to get the path from the arguments of
+ * @param server_info the server_info
+ * @return char* the path
+ */
 static char *get_path_from_args(client_t client, server_info_t server_info)
 {
     char *path = NULL;
@@ -37,6 +55,14 @@ static char *get_path_from_args(client_t client, server_info_t server_info)
     return path;
 }
 
+/**
+ * @brief Store a file
+ * @details Store a file from the client to the server and save it
+ *
+ * @param client the client to store the file to
+ * @param server_info the server_info
+ * @param clientFd the client file descriptor
+ */
 void stor(client_t client, server_info_t server_info, int clientFd)
 {
     char *path = get_path_from_args(client, server_info);
@@ -59,6 +85,15 @@ void stor(client_t client, server_info_t server_info, int clientFd)
     reply_code(client);
 }
 
+/**
+ * @brief Check if the file is valid
+ * @details Check if the file is valid
+ *
+ * @param server_info the server_info
+ * @param client the client to check the file of
+ * @param arg the argument of the stor command
+ * @return true if valid, false if not
+ */
 static bool is_valid_file(server_info_t server_info,
     client_t client, char *arg)
 {
@@ -77,6 +112,15 @@ static bool is_valid_file(server_info_t server_info,
     return false;
 }
 
+/**
+ * @brief Check if the stor command has an error
+ * @details Check if the stor command has an error
+ *
+ * @param client the client to check the stor command of
+ * @param server_info the server_info
+ * @param args the arguments of the stor command
+ * @return true if error, false if not
+ */
 static bool is_path_not_correct(char *path, char *server_path)
 {
     char *folder = NULL;
@@ -100,6 +144,15 @@ static bool is_path_not_correct(char *path, char *server_path)
     return false;
 }
 
+/**
+ * @brief Check if the stor command has an error
+ * @details Check if the stor command has an error
+ *
+ * @param client the client to check the stor command of
+ * @param server_info the server_info
+ * @param args the arguments of the stor command
+ * @return true if error, false if not
+ */
 bool is_stor_error(client_t client, server_info_t server_info, char **args)
 {
     char *path = NULL;

@@ -9,7 +9,13 @@
 #include "garbage_collector.h"
 #include <netinet/in.h>
 
-
+/**
+ * @brief Create an external socket struct
+ * @details Create an external socket struct with default values
+ * for better fork handling
+ *
+ * @return external_socket_t the created external socket
+*/
 external_socket_t create_external_socket(void)
 {
     external_socket_t new_socket = my_malloc(sizeof(struct external_socket_s));

@@ -10,6 +10,12 @@
 #include "debug.h"
 #include "macros.h"
 
+/**
+ * @brief Print a fd_set (debug)
+ * @details Print a fd_set (only in dev mode)
+ *
+ * @param set the fd_set to print
+*/
 UNUSED static void dev_print_fd_set(fd_set *set)
 {
     int fds[FD_SETSIZE] = {0};
@@ -31,6 +37,12 @@ UNUSED static void dev_print_fd_set(fd_set *set)
     SOMETIMES_DEBUG(&print, 5000, "%s", buffer);
 }
 
+/**
+ * @brief Print a fd_set (debug)
+ * @details Print a fd_set (only in dev mode)
+ *
+ * @param set the fd_set to print
+*/
 void print_fd_set(UNUSED fd_set *set)
 {
     #ifndef DEV_MODE

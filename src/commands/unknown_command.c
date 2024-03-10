@@ -10,6 +10,12 @@
 #include "reply_code.h"
 #include <sys/select.h>
 
+/**
+ * @brief Unknown command
+ * @details Print the unknown command message
+ *
+ * @param client the client to print the unknown command message for
+*/
 void unknown_command(client_t client, UNUSED char **args,
     UNUSED fd_set *readfds, UNUSED server_info_t server_info)
 {

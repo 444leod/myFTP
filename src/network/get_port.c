@@ -8,6 +8,13 @@
 #include "lib.h"
 #include <arpa/inet.h>
 
+/**
+ * @brief Get the port of a socket
+ * @details Get the port of a socket and update the port variable
+ *
+ * @param fd the socket
+ * @param port the port to update
+*/
 void get_port(int fd, int *port)
 {
     struct sockaddr_in sin;

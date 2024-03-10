@@ -10,6 +10,14 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 
+/**
+ * @brief Wait for select
+ * @details Wait for select to write on the client's socket
+ *
+ * @param clientFd the client file descriptor
+ * @param client the client
+ * @return int 0 if success, -1 if error
+ */
 static int wait_for_select(int clientFd, client_t client)
 {
     fd_set writefds;
@@ -26,6 +34,15 @@ static int wait_for_select(int clientFd, client_t client)
     return 0;
 }
 
+/**
+ * @brief Get the path from the arguments
+ * @details Get the path from the arguments
+ * based on the server path and the client pwd
+ *
+ * @param client the client to get the path from the arguments of
+ * @param server_info the server_info
+ * @return char* the path
+ */
 static char *get_path_from_args(client_t client, server_info_t server_info)
 {
     char *path = NULL;
@@ -37,6 +54,15 @@ static char *get_path_from_args(client_t client, server_info_t server_info)
     return path;
 }
 
+/**
+ * @brief Retrieve a file
+ * @details Retrieve a file from the server
+ * and send it to the client
+ *
+ * @param client the client to retrieve the file from
+ * @param server_info the server_info
+ * @param clientFd the client file descriptor
+ */
 void retr(client_t client, server_info_t server_info, int clientFd)
 {
     char *path = get_path_from_args(client, server_info);
@@ -59,6 +85,14 @@ void retr(client_t client, server_info_t server_info, int clientFd)
     reply_code(client);
 }
 
+/**
+ * @brief Check if the given path is a file
+ * @details Check if the given path is a file
+ *
+ * @param path the path to check
+ *
+ * @return true if the path is a file
+*/
 static bool is_file(char *path)
 {
     struct stat path_stat;
@@ -67,6 +101,16 @@ static bool is_file(char *path)
     return S_ISREG(path_stat.st_mode);
 }
 
+/**
+ * @brief Check if the command is an error
+ * @details Check if the command is an error
+ * based on the client status and the length of the command
+ *
+ * @param client the client to check the command for
+ * @param len the length of the command
+ *
+ * @return true if the command is an error
+*/
 static bool is_correct_file(char *path)
 {
     if (access(path, F_OK) == -1 || !is_file(path))
@@ -74,6 +118,16 @@ static bool is_correct_file(char *path)
     return true;
 }
 
+/**
+ * @brief Check if the path is correct
+ * @details Check if the path is correct
+ * based on the server path
+ *
+ * @param path the path to check
+ * @param server_path the server path
+ *
+ * @return true if the path is not correct
+*/
 static bool is_path_not_correct(char *path, char *server_path)
 {
     char *folder = NULL;
@@ -97,6 +151,15 @@ static bool is_path_not_correct(char *path, char *server_path)
     return is_correct_file(path);
 }
 
+/**
+ * @brief Check if the retr command has an error
+ * @details Check if the retr command has an error
+ *
+ * @param client the client to check the retr command of
+ * @param server_info the server_info
+ * @param args the arguments of the retr command
+ * @return true if error, false if not
+*/
 bool is_retr_error(client_t client, server_info_t server_info, char **args)
 {
     char *path = NULL;

@@ -14,6 +14,15 @@
 #include <unistd.h>
 #include <stdio.h>
 
+/**
+ * @brief Execute the command
+ * @details Execute the command of the client using the commands array
+ *
+ * @param command the command to execute with its arguments
+ * @param client the client to execute the command for
+ * @param readfds the readfds
+ * @param server_info the server_info
+*/
 static void execute_command(char **command, client_t client,
     fd_set *readfds, server_info_t server_info)
 {
@@ -32,6 +41,15 @@ static void execute_command(char **command, client_t client,
     commands[i].func(client, command, readfds, server_info);
 }
 
+/**
+ * @brief Handle the command of a client
+ * @details Handle the command of a client
+ * by parsing it and executing it
+ *
+ * @param client the client to handle the command of
+ * @param readfds the readfds
+ * @param server_info the server_info
+*/
 void handle_command(client_t client, fd_set *readfds,
     server_info_t server_info)
 {

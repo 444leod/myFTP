@@ -11,6 +11,12 @@
 #include "reply_code.h"
 #include <sys/select.h>
 
+/**
+ * @brief Quit the client
+ * @details Quit the client
+ *
+ * @param client the client to quit
+ */
 void quit(client_t client, char **args,
     UNUSED fd_set *readfds, UNUSED server_info_t server_info)
 {

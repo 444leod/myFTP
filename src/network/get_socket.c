@@ -8,6 +8,12 @@
 #include <arpa/inet.h>
 #include "lib.h"
 
+/**
+ * @brief Get a socket
+ * @details Get a socket with the AF_INET and SOCK_STREAM parameters
+ *
+ * @return the socket
+*/
 int get_socket(void)
 {
     int socketFd = socket(AF_INET, SOCK_STREAM, 0);

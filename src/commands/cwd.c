@@ -11,6 +11,13 @@
 #include "lib.h"
 #include <sys/select.h>
 
+/**
+ * @brief Verify the path
+ * @details Verify the path of the client based on the server path
+ *
+ * @param client the client to verify the path of
+ * @param server_path the server path
+*/
 static void verify_path(client_t client, char *server_path)
 {
     char *new_path = get_current_dir();
@@ -27,6 +34,18 @@ static void verify_path(client_t client, char *server_path)
     client->pwd = supercat(2, new_path + strlen(server_path), "/");
 }
 
+/**
+ * @brief Change the working directory
+ * @details Change the working directory of the client
+ * if the status is not logged in, the client will receive a not logged in
+ * error
+ * if the path is not found, the client will receive a file unavailable error
+ * if the path is found, the client will receive a requested file action
+ *
+ * @param client the client to execute the command for
+ * @param path the path to change to
+ * @param server_info the server_info
+*/
 static void change_working_directory(client_t client, char *path,
     server_info_t server_info)
 {
@@ -51,6 +70,14 @@ static void change_working_directory(client_t client, char *path,
     verify_path(client, server_info->path);
 }
 
+/**
+ * @brief Change the working directory
+ * @details Change the working directory of the client
+ *
+ * @param client the client to execute the command for
+ * @param args the arguments of the command
+ * @param server_info the server_info
+*/
 void cwd(client_t client, char **args,
     UNUSED fd_set *readfds, server_info_t server_info)
 {

@@ -16,7 +16,7 @@
 /**
  * @brief Execute the command of the client
  * @details Execute the command of the client
- * 
+ *
  * @param client the client to execute the command for
  * @param server_info the server_info
  * @param clientFd the clientFd

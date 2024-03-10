@@ -1,20 +1,29 @@
 /*
-** EPITECH PROJECT, 2024
-** myFTP
+** EPITECH PROJECT, 2023
+** PROJETS
 ** File description:
-** garbage_collector
+** garbage
 */
+    #pragma once
 
-#pragma once
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <stdarg.h>
+    #include <unistd.h>
+    #include <stdint.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+struct garbagec_t {
+    void *data;
+    struct garbagec_t *next;
+    struct garbagec_t *prev;
+};
 
-typedef struct garbage_node_s {
-    void *ptr;
-    struct garbage_node_s *next;
-} *garbage_node_t;
-
+typedef struct garbagec_t garbage_t;
+typedef garbage_t *g_llist_t;
+g_llist_t g_create(void *data);
+g_llist_t g_delete_begin(g_llist_t list);
+g_llist_t g_insert_end(void *data, g_llist_t list);
+g_llist_t *get_llist(void);
+void my_free_all(void);
+void my_free(void *pointer);
 void *my_malloc(size_t size);
-void my_free(void *ptr);
-void clear_garbage_collector(void);

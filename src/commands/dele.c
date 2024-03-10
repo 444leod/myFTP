@@ -63,7 +63,7 @@ static void remove_file(client_t client,
         path = supercat(2, server_info->path, filename);
     else
         path = supercat(3, server_info->path, client->pwd, filename);
-    if (is_path_not_correct(path, server_info->path)) {
+    if (is_path_not_correct(my_strdup(path), server_info->path)) {
         client->current_code = FILE_UNAVAILABLE;
         return;
     }

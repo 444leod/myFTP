@@ -12,6 +12,11 @@ typedef struct server_message_s {
     char *message;
 } server_message_s;
 
+/**
+ * @enum REPLY_CODES
+ * @brief Enum of reply codes
+ * @details Enum of reply codes with their corresponding code
+*/
 enum REPLY_CODES {
     SERVICE_READY = 120,
     DATA_CONNECTION_ALREADY_OPEN = 125,
@@ -29,6 +34,11 @@ enum REPLY_CODES {
     NEED_ACCOUNT_FOR_LOGIN = 332,
 };
 
+/**
+ * @enum ERROR_CODES
+ * @brief Enum of error codes
+ * @details Enum of error codes with their corresponding code
+*/
 enum ERROR_CODES {
     CANT_OPEN_DATA_CONNECTION = 425,
     SYNTAX_ERROR = 500,

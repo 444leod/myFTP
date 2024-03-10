@@ -10,6 +10,12 @@
 #include "clientllist.h"
 #include <sys/select.h>
 
+/**
+ * @brief Type
+ * @details Type
+ *
+ * @param client the client to type
+*/
 void type(client_t client, UNUSED char **args,
     UNUSED fd_set *readfds, UNUSED server_info_t server_info)
 {

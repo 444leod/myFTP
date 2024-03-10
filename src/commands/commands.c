@@ -7,6 +7,10 @@
 
 #include "commands.h"
 
+/**
+ * @brief Commands array
+ * @details Array of commands, with their name and function
+*/
 const command_t commands[] = {
     {"USER", &user},
     {"PASS", &pass},
@@ -26,6 +30,10 @@ const command_t commands[] = {
     {NULL, &unknown_command}
 };
 
+/**
+ * @brief Data commands array
+ * @details Array of data commands, with their name and function
+*/
 const data_command_t data_commands[] = {
     { "LIST", &list },
     { "RETR", &retr },
@@ -33,6 +41,10 @@ const data_command_t data_commands[] = {
     { NULL, NULL }
 };
 
+/**
+ * @brief Data commands verify array
+ * @details Array of data commands verificator, with their name and function
+*/
 const data_command_verify_t data_commands_verif[] = {
     { "LIST", &is_list_error },
     { "RETR", &is_retr_error },

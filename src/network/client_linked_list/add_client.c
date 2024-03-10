@@ -7,6 +7,12 @@
 
 #include "clientllist.h"
 
+/**
+ * @brief Add a client to the linked list
+ * @details Add a client to the linked list
+ *
+ * @param new_client the client to add
+*/
 void add_client(client_t new_client)
 {
     client_t *clients = get_clients();

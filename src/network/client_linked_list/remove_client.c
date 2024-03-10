@@ -9,6 +9,12 @@
 #include "garbage_collector.h"
 #include <unistd.h>
 
+/**
+ * @brief Destroy the fds
+ * @details Destroy the fds of the client
+ *
+ * @param tmp the client
+*/
 static void destroy_fds(client_t tmp)
 {
     if (tmp->fd != -1) {
@@ -19,6 +25,12 @@ static void destroy_fds(client_t tmp)
     }
 }
 
+/**
+ * @brief Remove a client from the linked list
+ * @details Remove a client from the linked list
+ *
+ * @param fd the fd of the client to remove
+*/
 void remove_client(int fd)
 {
     client_t *clients = get_clients();

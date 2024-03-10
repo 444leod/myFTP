@@ -13,6 +13,14 @@
 #include <sys/select.h>
 #include <stdbool.h>
 
+/**
+ * @brief Wait for select
+ * @details Wait for select to write
+ *
+ * @param clientFd the client file descriptor
+ * @param client the client to wait for select
+ * @return int 0 if success, -1 if error
+ */
 static int wait_for_select(int clientFd, client_t client)
 {
     fd_set writefds;
@@ -29,6 +37,14 @@ static int wait_for_select(int clientFd, client_t client)
     return 0;
 }
 
+/**
+ * @brief Get the ls result
+ * @details Get the ls result of the client
+ *
+ * @param server_info the server_info
+ * @param client the client to get the ls result of
+ * @return FILE* the file to get the ls result
+ */
 FILE *get_ls_result(server_info_t server_info, client_t client)
 {
     char *path = tablen((void **)client->args) == 2 ? client->args[1] : "/.";
@@ -40,6 +56,14 @@ FILE *get_ls_result(server_info_t server_info, client_t client)
     return ls;
 }
 
+/**
+ * @brief Close the file and the client
+ * @details Close the file and the client
+ *
+ * @param ls the file to close
+ * @param clientFd the client file descriptor
+ * @param client the client to close
+ */
 static void close_all(FILE *ls, int clientFd, client_t client)
 {
     pclose(ls);
@@ -48,6 +72,17 @@ static void close_all(FILE *ls, int clientFd, client_t client)
     reply_code(client);
 }
 
+/**
+ * @brief List the directory
+ * @details List the directory of the client
+ * if the status is not logged in, the client will receive a not logged in
+ * error
+ * if the path is not found, the client will receive a file unavailable error
+ * if the path is found, the client will receive a requested file action
+ *
+ * @param client the client to execute the command for
+ * @param server_info the server_info
+ */
 void list(client_t client, server_info_t server_info, int clientFd)
 {
     FILE *ls = get_ls_result(server_info, client);
@@ -66,6 +101,15 @@ void list(client_t client, server_info_t server_info, int clientFd)
     close_all(ls, clientFd, client);
 }
 
+/**
+ * @brief Check if the list command has an error
+ * @details Check if the list command has an error
+ *
+ * @param client the client to check the list command of
+ * @param server_info the server_info
+ * @param args the arguments of the list command
+ * @return true if error, false if not
+ */
 static bool is_path_not_correct(char *path, char *server_path)
 {
     char *folder = NULL;
@@ -83,6 +127,15 @@ static bool is_path_not_correct(char *path, char *server_path)
     return false;
 }
 
+/**
+ * @brief Check if the list command has an error
+ * @details Check if the list command has an error
+ *
+ * @param client the client to check the list command of
+ * @param server_info the server_info
+ * @param args the arguments of the list command
+ * @return true if error, false if not
+ */
 bool is_list_error(client_t client, server_info_t server_info, char **args)
 {
     char *path = NULL;

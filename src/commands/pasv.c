@@ -14,6 +14,13 @@
 #include <stdlib.h>
 #include <time.h>
 
+/**
+ * @brief Get the pasv port
+ * @details Get the pasv port of the client
+ *
+ * @param port the port to get the pasv port of
+ * @return the pasv port
+ */
 static char *get_pasv_port(int port)
 {
     int p1 = port / 256;
@@ -22,6 +29,13 @@ static char *get_pasv_port(int port)
     return my_snprintf("%d,%d", p1, p2);
 }
 
+/**
+ * @brief Update the client buffer
+ * @details Update the client buffer with the ip and port
+ *
+ * @param client the client to update the buffer of
+ * @param server_info the server_info
+ */
 static void update_client_buffer(client_t client, server_info_t server_info)
 {
     char *port_str = get_pasv_port(client->external_socket->port);
@@ -30,6 +44,12 @@ static void update_client_buffer(client_t client, server_info_t server_info)
     client->buffer = replace_char(client->buffer, '.', ',');
 }
 
+/**
+ * @brief Create a data socket
+ * @details Create a data socket for the client
+ *
+ * @param client the client to create the data socket for
+ */
 static void create_data_socket(client_t client)
 {
     client->external_socket->fd = get_socket();
@@ -38,6 +58,14 @@ static void create_data_socket(client_t client)
     listen_socket(client->external_socket->fd, 1);
 }
 
+/**
+ * @brief Pasv command
+ * @details Enter passive mode
+ * Open a data socket and send the ip and port to the client
+ *
+ * @param client the client to enter passive mode
+ * @param server_info the server_info
+ */
 void pasv(client_t client, UNUSED char **args,
     UNUSED fd_set *readfds, server_info_t server_info)
 {

@@ -14,6 +14,10 @@ typedef struct help_s {
     char *description;
 } help_t;
 
+/**
+ * @brief help message list
+ * @details list of help messages for each command
+*/
 static const help_t help_list[] = {
     {"USER", "USER <sp> <username> <CRLF> (send username)."},
     {"PASS", "PASS <sp> <password> <CRLF> (send password)."},
@@ -35,6 +39,11 @@ static const help_t help_list[] = {
     {NULL, NULL}
 };
 
+/**
+ * @brief global help message
+ * @details global help message if no command is specified or unknown
+ * command is specified
+*/
 static const char *GLOBAL_HELP_MESSAGE = "The following commands are "
 "recognized: \nCDUP CWD  DELE HELP LIST NOOP PASS PASV PORT PWD  QUIT "
 "RETR STOR USER";

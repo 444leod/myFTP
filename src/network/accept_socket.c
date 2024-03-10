@@ -8,6 +8,12 @@
 #include <arpa/inet.h>
 #include "lib.h"
 
+/**
+ * @brief Accept a socket
+ * @details Accept a socket and call a function with the clientFd
+ *
+ * @param sockFd the socket to accept
+*/
 void accept_socket(int sockFd, void (*func)(int))
 {
     int clientFd = 0;

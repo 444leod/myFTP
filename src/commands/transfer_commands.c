@@ -13,6 +13,14 @@
 #include <sys/select.h>
 #include <stdbool.h>
 
+/**
+ * @brief Execute the command of the client
+ * @details Execute the command of the client
+ * 
+ * @param client the client to execute the command for
+ * @param server_info the server_info
+ * @param clientFd the clientFd
+ */
 static void do_command(client_t client,
     server_info_t server_info, int clientFd)
 {
@@ -24,6 +32,13 @@ static void do_command(client_t client,
     }
 }
 
+/**
+ * @brief Passive mode execution
+ * @details Passive mode execution (server is waiting for client to connect)
+ *
+ * @param client the client to execute the passive mode for
+ * @param server_info the server_info
+ */
 static void passive_mode(client_t client, server_info_t server_info)
 {
     fd_set readfds;
@@ -46,6 +61,13 @@ static void passive_mode(client_t client, server_info_t server_info)
     do_command(client, server_info, clientFd);
 }
 
+/**
+ * @brief Active mode execution
+ * @details Active mode execution (server is connection to client)
+ *
+ * @param client the client to execute the active mode for
+ * @param server_info the server_info
+ */
 static void active_mode(client_t client, server_info_t server_info)
 {
     struct sockaddr_in servAddr;
@@ -66,6 +88,13 @@ static void active_mode(client_t client, server_info_t server_info)
     do_command(client, server_info, clientFd);
 }
 
+/**
+ * @brief Execute the mode
+ * @details Execute the command based on client's mode (passive or active)
+ *
+ * @param client the client to execute the mode for
+ * @param server_info the server_info
+ */
 static void execute_mode(client_t client, server_info_t server_info)
 {
     switch (client->external_socket->mode) {
@@ -80,6 +109,13 @@ static void execute_mode(client_t client, server_info_t server_info)
     }
 }
 
+/**
+ * @brief Fork loop
+ * @details Fork loop
+ *
+ * @param client the client to fork
+ * @param server_info the server_info
+ */
 static void fork_loop(client_t client, server_info_t server_info)
 {
     int pid = fork();
@@ -96,6 +132,14 @@ static void fork_loop(client_t client, server_info_t server_info)
     }
 }
 
+/**
+ * @brief Execute the fork
+ * @details Execute the fork
+ *
+ * @param client the client to execute the fork for
+ * @param args the arguments of the command
+ * @param server_info the server_info
+ */
 static void execute_fork(client_t client, char **args,
     server_info_t server_info)
 {
@@ -103,6 +147,16 @@ static void execute_fork(client_t client, char **args,
     fork_loop(client, server_info);
 }
 
+/**
+ * @brief Check if the transfer command has an error
+ * @details Check if the transfer command has an error
+ *
+ * @param client the client to check the transfer command of
+ * @param server_info the server_info
+ * @param len the length of the arguments
+ *
+ * @return true if error, false if not
+ */
 static bool is_error_case(client_t client, server_info_t server_info,
     int len, char **args)
 {
@@ -125,6 +179,15 @@ static bool is_error_case(client_t client, server_info_t server_info,
     return true;
 }
 
+/**
+ * @brief Transfer commands
+ * @details Transfer commands of the client
+ * Transfer commands of the client, for data transfer (passive and active mode)
+ *
+ * @param client the client to transfer commands for
+ * @param args the arguments of the transfer command
+ * @param server_info the server_info
+ */
 void transfer_commands(client_t client, char **args,
     UNUSED fd_set *readfds, server_info_t server_info)
 {

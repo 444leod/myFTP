@@ -9,6 +9,14 @@
 #include <unistd.h>
 #include "ftp.h"
 
+/**
+ * @brief Clean exit
+ * @details Clean exit by closing the fds (clients & socket)
+ * and freeing all the memory
+ *
+ * @param status the status to exit with
+ * @param fd the fd to close (if status == -1)
+*/
 static void my_clean_exit(int status, int fd)
 {
     static int actualFd = -1;
@@ -24,11 +32,21 @@ static void my_clean_exit(int status, int fd)
     exit(status);
 }
 
+/**
+ * @brief Exit the program
+ * @details Exit the program by calling my_clean_exit with the status
+ *
+ * @param status the status to exit with
+*/
 void my_exit(int status)
 {
     my_clean_exit(status, 0);
 }
 
+/**
+ * @brief Prepare the exit
+ * @details Prepare the exit by sending the socketFd to a store function.
+*/
 void prepare_exit(int socketFd)
 {
     my_clean_exit(-1, socketFd);

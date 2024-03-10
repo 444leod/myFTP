@@ -15,6 +15,13 @@
 #include <time.h>
 #include <stdbool.h>
 
+/**
+ * @brief Is number
+ * @details Check if the string is a number
+ *
+ * @param str the string to check
+ * @return true if the string is a number
+ */
 static bool is_number(char *str)
 {
     for (int i = 0; str[i]; i++) {
@@ -24,6 +31,13 @@ static bool is_number(char *str)
     return true;
 }
 
+/**
+ * @brief Verify ip
+ * @details Verify ip of the client
+ *
+ * @param items the items to verify the ip of
+ * @return true if the ip is correct
+ */
 static bool verify_ip(char **items)
 {
     for (int i = 0; items[i]; i++) {
@@ -35,6 +49,13 @@ static bool verify_ip(char **items)
     return true;
 }
 
+/**
+ * @brief Get full arg
+ * @details Get full arg of the command as h1,h2,h3,h4,p1,p2
+ *
+ * @param arg the arg to get the full arg of
+ * @return char* the full arg
+ */
 static char *get_full_arg(char *arg)
 {
     char *full_arg = arg;
@@ -46,6 +67,14 @@ static char *get_full_arg(char *arg)
     return full_arg;
 }
 
+/**
+ * @brief Connect to client
+ * @details Connect to client of the client
+ *
+ * @param client the client to connect to
+ * @param args the arguments of the connect to client command
+ * @return int 0 if success, -1 if error
+ */
 static int connect_to_client(client_t client, char **args)
 {
     char *full_arg = get_full_arg(args[1]);
@@ -64,6 +93,14 @@ static int connect_to_client(client_t client, char **args)
     return 0;
 }
 
+/**
+ * @brief Port command
+ * @details Port command of the client
+ * Open a data socket and bind it to the client ip and port
+ *
+ * @param client the client to port
+ * @param args the arguments of the port command
+ */
 void port(client_t client, char **args,
     UNUSED fd_set *readfds, UNUSED server_info_t server_info)
 {

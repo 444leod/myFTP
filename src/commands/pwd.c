@@ -10,6 +10,12 @@
 #include "clientllist.h"
 #include <sys/select.h>
 
+/**
+ * @brief Print working directory
+ * @details Print the working directory of the client
+ *
+ * @param client the client to print the working directory of
+ */
 void pwd(client_t client, UNUSED char **args,
     UNUSED fd_set *readfds, UNUSED server_info_t server_info)
 {

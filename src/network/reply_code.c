@@ -13,6 +13,11 @@
 #include "lib.h"
 #include "garbage_collector.h"
 
+/**
+ * @brief The server messages
+ * @details The messages that the server can send to the client based on the
+ * current code
+*/
 const server_message_s serverMessages[] = {
     {SERVICE_READY,
         "%d Service ready in %d minutes.\n"},
@@ -69,6 +74,16 @@ const server_message_s serverMessages[] = {
     {-1, (void *)0}
 };
 
+/**
+ * @brief Display the current pwd to the client
+ * @details Send the current pwd to the client
+ *
+ * @param client the client to send the pwd to
+ * @param socketFd the socket to send the pwd to
+ * @param code the code to send
+ *
+ * @return true if the pwd was sent
+*/
 static bool display_pwd(client_t client, int socketFd, int code)
 {
     char *pwd = my_strdup(client->pwd);
@@ -80,6 +95,17 @@ static bool display_pwd(client_t client, int socketFd, int code)
     return true;
 }
 
+/**
+ * @brief Check if the current code is a special reply code
+ * @details Check if the current code is a special reply code, if it is, reply
+ *  to the client with the special message and return true
+ *
+ * @param client the client to check
+ * @param code the code to check
+ * @param socketFd the socket to reply to
+ *
+ * @return true if the current code is a special reply code
+*/
 static bool special_reply_codes2(client_t client, int code, int socketFd)
 {
     switch (code) {
@@ -100,6 +126,15 @@ static bool special_reply_codes2(client_t client, int code, int socketFd)
     return false;
 }
 
+/**
+ * @brief Check if the current code is a special reply code
+ * @details Check if the current code is a special reply code, if it is, reply
+ *   to the client with the special message and return true
+ *
+ * @param client the client to check
+ *
+ * @return true if the current code is a special reply code
+*/
 static bool special_reply_code(client_t client)
 {
     int socketFd = client->fd;
@@ -118,6 +153,12 @@ static bool special_reply_code(client_t client)
     return false;
 }
 
+/**
+ * @brief Reply to the client with the current code
+ * @details Reply to the client with the current code
+ *
+ * @param client the client to reply to
+*/
 void reply_code(client_t client)
 {
     int socketFd = client->fd;

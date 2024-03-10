@@ -10,6 +10,15 @@
 #include <stddef.h>
 #include "garbage_collector.h"
 
+/**
+ * @brief Snprintf wrapper
+ * @details Snprintf wrapper that automatically allocates memory
+ *
+ * @param format the format string
+ * @param ... the arguments
+ *
+ * @return the formatted string
+*/
 char *my_snprintf(const char *format, ...)
 {
     va_list args;

@@ -9,6 +9,14 @@
 #include "lib.h"
 #include "ftp.h"
 
+/**
+ * @brief Bind a socket
+ * @details Bind a socket to a given port and update the ip
+ *
+ * @param socketFd the socket to bind
+ * @param port the port to bind to
+ * @param ip the ip to update
+*/
 void bind_socket(int socketFd, int port, char **ip)
 {
     struct sockaddr_in serverAddress;
